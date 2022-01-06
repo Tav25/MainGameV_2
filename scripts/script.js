@@ -90,6 +90,76 @@ import * as MP from './MyPoint';
   let startButton = new Osc.OnScene(start_tap)
 
 
+  //cardAnim
+  const [
+    mainCard, matMainCard,
+
+    topCard0, mattopCard0,
+    topCard1, mattopCard1,
+    topCard2, mattopCard2,
+    topCard3, mattopCard3,
+    topCard4, mattopCard4,
+
+    texture0, texture1, texture2, texture3, texture4,
+    texture5, texture6, texture7, texture8, texture9,
+    texture10, texture11, texture12, texture13, texture14,
+    texture15, texture16, texture17, texture18, texture19,
+    // texture20, texture21, texture22, texture23, texture24,
+    // texture25, texture26, texture27, texture28, texture29,
+
+    textureSecond0, textureSecond1, textureSecond2, textureSecond3, textureSecond4,
+    textureSecond5, textureSecond6, textureSecond7, textureSecond8, textureSecond9,
+    textureSecond10, textureSecond11, textureSecond12, textureSecond13, textureSecond14,
+    textureSecond15, textureSecond16, textureSecond17, textureSecond18, textureSecond19,
+    // textureSecond20, textureSecond21, textureSecond22, textureSecond23, textureSecond24,
+    // textureSecond25, textureSecond26, textureSecond27, textureSecond28, textureSecond29,
+    rubashka
+
+  ] = await Promise.all([
+    Scene.root.findFirst('mainCard'), Materials.findFirst('matMainCard'),
+
+    Scene.root.findFirst('topCard0'), Materials.findFirst('mattopCard0'),
+    Scene.root.findFirst('topCard1'), Materials.findFirst('mattopCard1'),
+    Scene.root.findFirst('topCard2'), Materials.findFirst('mattopCard2'),
+    Scene.root.findFirst('topCard3'), Materials.findFirst('mattopCard3'),
+    Scene.root.findFirst('topCard4'), Materials.findFirst('mattopCard4'),
+
+    Textures.findFirst('card – 0'), Textures.findFirst('card – 1'), Textures.findFirst('card – 2'), Textures.findFirst('card – 3'), Textures.findFirst('card – 4'),
+    Textures.findFirst('card – 5'), Textures.findFirst('card – 6'), Textures.findFirst('card – 7'), Textures.findFirst('card – 8'), Textures.findFirst('card – 9'),
+    Textures.findFirst('card – 10'), Textures.findFirst('card – 11'), Textures.findFirst('card – 12'), Textures.findFirst('card – 13'), Textures.findFirst('card – 14'),
+    Textures.findFirst('card – 15'), Textures.findFirst('card – 16'), Textures.findFirst('card – 17'), Textures.findFirst('card – 18'), Textures.findFirst('card – 19'),
+    // Textures.findFirst('card – 20'), Textures.findFirst('card – 21'), Textures.findFirst('card – 22'), Textures.findFirst('card – 23'), Textures.findFirst('card – 24'),
+    // Textures.findFirst('card – 25'), Textures.findFirst('card – 26'), Textures.findFirst('card – 27'), Textures.findFirst('card – 28'), Textures.findFirst('card – 29'),
+
+    Textures.findFirst('cardSecond – 0'), Textures.findFirst('cardSecond – 1'), Textures.findFirst('cardSecond – 2'), Textures.findFirst('cardSecond – 3'), Textures.findFirst('cardSecond – 4'),
+    Textures.findFirst('cardSecond – 5'), Textures.findFirst('cardSecond – 6'), Textures.findFirst('cardSecond – 7'), Textures.findFirst('cardSecond – 8'), Textures.findFirst('cardSecond – 9'),
+    Textures.findFirst('cardSecond – 10'), Textures.findFirst('cardSecond – 11'), Textures.findFirst('cardSecond – 12'), Textures.findFirst('cardSecond – 13'), Textures.findFirst('cardSecond – 14'),
+    Textures.findFirst('cardSecond – 15'), Textures.findFirst('cardSecond – 16'), Textures.findFirst('cardSecond – 17'), Textures.findFirst('cardSecond – 18'), Textures.findFirst('cardSecond – 19'),
+    // Textures.findFirst('cardSecond – 20'), Textures.findFirst('cardSecond – 21'), Textures.findFirst('cardSecond – 22'), Textures.findFirst('cardSecond – 23'), Textures.findFirst('cardSecond – 24'),
+    // Textures.findFirst('cardSecond – 25'), Textures.findFirst('cardSecond – 26'), Textures.findFirst('cardSecond – 27'), Textures.findFirst('cardSecond – 28'), Textures.findFirst('cardSecond – 29'),
+    Textures.findFirst('rubashka')
+  ])
+
+
+  let textureArray = [texture0, texture1, texture2, texture3, texture4,
+    texture5, texture6, texture7, texture8, texture9,
+    texture10, texture11, texture12, texture13, texture14,
+    texture15, texture16, texture17, texture18, texture19,
+    // texture20, texture21, texture22, texture23, texture24,
+    // texture25, texture26, texture27, texture28, texture29,
+    rubashka]
+
+  let textureArrayScecond = [textureSecond0, textureSecond1, textureSecond2, textureSecond3, textureSecond4,
+    textureSecond5, textureSecond6, textureSecond7, textureSecond8, textureSecond9,
+    textureSecond10, textureSecond11, textureSecond12, textureSecond13, textureSecond14,
+    textureSecond15, textureSecond16, textureSecond17, textureSecond18, textureSecond19,
+    // textureSecond20, textureSecond21, textureSecond22, textureSecond23, textureSecond24,
+    // textureSecond25, textureSecond26, textureSecond27, textureSecond28, textureSecond29,
+    rubashka]
+
+  //
+
+
 
   let GameService = {
     point: 0,
