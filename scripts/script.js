@@ -157,6 +157,15 @@ import * as MP from './MyPoint';
     // textureSecond25, textureSecond26, textureSecond27, textureSecond28, textureSecond29,
     rubashka]
 
+
+  let mainCardCl = new Osc.OnScene(mainCard, matMainCard, textureArray)
+
+  let topCardNumber0 = new Osc.OnScene(topCard0, mattopCard0, textureArrayScecond)
+  let topCardNumber1 = new Osc.OnScene(topCard1, mattopCard1, textureArrayScecond)
+  let topCardNumber2 = new Osc.OnScene(topCard2, mattopCard2, textureArrayScecond)
+  let topCardNumber3 = new Osc.OnScene(topCard3, mattopCard3, textureArrayScecond)
+  let topCardNumber4 = new Osc.OnScene(topCard4, mattopCard4, textureArrayScecond)
+
   //
 
 
