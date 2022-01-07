@@ -436,12 +436,22 @@ import * as MP from './MyPoint';
   //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
   let AnimationInGame = {
 
+    rub:20,
+
     test() {
       Diagnostics.log('testAnim')
     },
 
     preparationAnim() {
       Diagnostics.log('prepAnimation')
+
+      topCardNumber0.replaseMaterialObj(this.rub)
+      topCardNumber1.replaseMaterialObj(this.rub)
+      topCardNumber2.replaseMaterialObj(this.rub)
+      topCardNumber3.replaseMaterialObj(this.rub)
+      topCardNumber4.replaseMaterialObj(this.rub)
+      mainCardCl.replaseMaterialObj(this.rub)
+
       topCardNumber0.opacity([0, 1], 900)
       topCardNumber1.opacity([0, 1], 900)
       topCardNumber2.opacity([0, 1], 900)
