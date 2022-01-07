@@ -409,9 +409,9 @@ import * as MP from './MyPoint';
 
     mainCycle() { // главный цикл
       this.isReadyToAnswer = true
-      AnimationInGame.mainCycleAnim()
       secondArrayProcess()
       Diagnostics.log(secondArray)
+      AnimationInGame.mainCycleAnim()
     },
 
     endGame() { // главный цикл
@@ -450,8 +450,17 @@ import * as MP from './MyPoint';
 
     preparationAnim() {
       Diagnostics.log('prepAnimation')
+      topCardNumber0.opacity([0, 1], 900)
+      topCardNumber1.opacity([0, 1], 900)
+      topCardNumber2.opacity([0, 1], 900)
+      topCardNumber3.opacity([0, 1], 900)
+      topCardNumber4.opacity([0, 1], 900)
+      mainCardCl.opacity([0, 1], 900)
+
     },
     mainCycleAnim() {
+      topCardNumber2.replaseMaterialObj(secondArray.arr[0])
+      mainCardCl.replaseMaterialObj(mainArray.arr[0])
       Diagnostics.log('mainCycleAnim')
     },
     resultAnim(result) {
