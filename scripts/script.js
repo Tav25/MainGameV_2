@@ -280,7 +280,7 @@ import * as MP from './MyPoint';
     },
 
     stepUp() {
-      this.stepSet = this.stepGet + 1
+      this.stepSet = this.step + 1
     },
 
     set stepSet(value) {
@@ -310,11 +310,11 @@ import * as MP from './MyPoint';
   });
 
   TouchGestures.onTap(testYes).subscribe((gesture) => {
-    GameAction.coreAnswer(GameCore.resultCheck(0))
+    GameAction.coreAnswer(GameCore.resultCheck(1))
   });
 
   TouchGestures.onTap(testNo).subscribe((gesture) => {
-    GameAction.coreAnswer(GameCore.resultCheck(1))
+    GameAction.coreAnswer(GameCore.resultCheck(0))
   });
 
 
@@ -377,14 +377,7 @@ import * as MP from './MyPoint';
   }
 
   ////////////////////////////////////////////////////////////////
-  const mainArray = new Ma.MyArray(20)
-  const secondArray = new Ma.MyArray(5)
-
-  function secondArrayProcess() {//подготовка доп массива
-    secondArray.mArray()
-    // secondArray.shuffle()
-    secondArray.repl(mainArray.arrMod, 0)
-  }
+  const { mainArray, secondArray } = podgotovkaGameCore();
 
   let GameCore = {
     answer: ['verno', 'neVerno', 'next'],
@@ -409,9 +402,7 @@ import * as MP from './MyPoint';
 
     mainCycle() { // главный цикл
       this.isReadyToAnswer = true
-      secondArrayProcess()
-      Diagnostics.log(secondArray)
-      AnimationInGame.mainCycleAnim()
+      mainCycleFunction();
     },
 
     endGame() { // главный цикл
@@ -420,8 +411,9 @@ import * as MP from './MyPoint';
 
     },
 
-    resultCheck(x = NaN) { // проверка при ответе
-      x = proverkaRezultata(x);
+    resultCheck(y = NaN) { // проверка при ответе
+      GameService.stepUp()
+      let x = proverkaRezultata(y);
 
       let result
       if (x === 0 && this.isReadyToAnswer) {
@@ -478,23 +470,50 @@ import * as MP from './MyPoint';
 
 
   //////////////////////////////////////////////////////////
-  let counter = 0
-  const ng4 = Time.setInterval(() => {
-    counter++
-    vuvodInformacii(GameService.monitor + GameCore.monitor)
-  }, 250)
-  function proverkaRezultata(x) {
-    if (mainArray.arrMod[0] === secondArray.arr[0]) {
-      x = 1;
-    }
-    return x;
-  }
-
-  //////////////////////////////////////////////////////////
 
   function stopIntervalTimer(rc) {// остановка таймера
     Time.clearInterval(rc);
   }
+
+  let counter = 0
+  const ng4 = Time.setInterval(() => {
+    counter++
+    vuvodInformacii(GameService.monitor + GameCore.monitor)
+  }, 250)///////////////////////////////////////////////////////////////////
+  function podgotovkaGameCore() {
+    const numberOfQuestions = 20;
+    const numberCardOnBoard = 5;
+    const mainArray = new Ma.MyArray(numberOfQuestions);
+    const secondArray = new Ma.MyArray(numberCardOnBoard);
+    return { mainArray, secondArray };
+  }
+
+  function mainCycleFunction() {
+    Diagnostics.log(secondArray.arr.length);
+    if (secondArray.arr.length === 5 || GameService.step === 0) {
+      secondArrayProcess();
+      Diagnostics.log('in ' + secondArray.arr.length);
+    }
+    Diagnostics.log('>>>>' + secondArray.arr);
+    AnimationInGame.mainCycleAnim();
+  }
+
+  function proverkaRezultata(x) {
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { x = 1; }
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 0) { x = 0; }
+    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 1) { x = 0; }
+    secondArray.delFirst()
+    return x
+
+  }
+
+  function secondArrayProcess() {//подготовка доп массива
+    secondArray.mArray()
+    // secondArray.shuffle()
+    secondArray.repl(mainArray.arrMod, 0)
+  }
+  //////////////////////////////////////////////////////////
+
 
 
 
