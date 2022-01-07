@@ -349,8 +349,7 @@ import * as MP from './MyPoint';
     },
 
     endGameFunction() {
-      Diagnostics.log('TEST_END_GAME')
-      GameCore.isReadyToAnswer = false
+      GameCore.endGame()
     },
 
     coreAnswer(x) {
@@ -381,120 +380,69 @@ import * as MP from './MyPoint';
   let GameCore = {
     answer: ['verno', 'neVerno', 'next'],
     isReadyToAnswer: false,
-
+    
     get monitor() {
       let texOut =
         `ReadyToAnswer: ${this.isReadyToAnswer}`
-      return texOut
-    },
-
-    preparation() {// подготовка к игре
-      this.isReadyToAnswer = false
-      //test animation
-      AnimationInGame.test()
-      AnimationInGame.endAnim()
-      AnimationInGame.animSecondMaincard()
-    },
-
-    mainCycle() { // главный цикл
-      this.isReadyToAnswer = true
-    },
-
-    resultCheck(x) { // проверка при ответе
-      if (x === 0 && this.isReadyToAnswer) {
-        return 'verno'
-      }
-      if (x === 1 && this.isReadyToAnswer) {
-        return 'neVerno'
-      }
-      if (x === 2 && this.isReadyToAnswer) {
-        return 'next'
+        return texOut
+      },
+      
+      preparation() {// подготовка к игре
+        this.isReadyToAnswer = false
+        //test animation
+        AnimationInGame.preparationAnim()
+      },
+      
+      mainCycle() { // главный цикл
+        this.isReadyToAnswer = true
+        AnimationInGame.mainCycleAnim()
+      },
+      
+      endGame() { // главный цикл
+        this.isReadyToAnswer = false
+        AnimationInGame.endGameAnim(GameService.howEnd)
+        
+      },
+      
+      resultCheck(x) { // проверка при ответе
+        let result
+        if (x === 0 && this.isReadyToAnswer) {
+          result = 'verno'
+        }
+        if (x === 1 && this.isReadyToAnswer) {
+          result = 'neVerno'
+        }
+        if (x === 2 && this.isReadyToAnswer) {
+          result = 'next'
+        }
+        
+        if (this.isReadyToAnswer) {
+          AnimationInGame.resultAnim(result + x)
+          return result
+        }
       }
     }
-  }
-
-  let AnimationInGame = {
-    posX: [-0.14, -0.07, 0, 0.07, 0.14],
-    posZ: [0, -0.005, -0.01, 0, 0],
-
+    
+    //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
+    let AnimationInGame = {
+      
     test() {
-      Diagnostics.log(this.posX[0])
+      Diagnostics.log('testAnim')
     },
 
-    animSecondMaincard(mainNumTex = 0) {
-      mainCardCl.vrashenieZ(0, 0.5, 1)
-      mainCardCl.vrashenieY(0, 0.5, 1)
-      mainCardCl.vrashenieX(0, 0.5, 700)
-
-      const ng3 = Time.setInterval(() => {
-        stopIntervalTimer(ng3)
-        mainCardCl.replaseMaterialObj(mainNumTex)
-      }, 200)
+    preparationAnim() {
+      Diagnostics.log('prepAnimation')
+    },
+    mainCycleAnim() {
+      Diagnostics.log('mainCycleAnim')
+    },
+    resultAnim(result) {
+      Diagnostics.log('resultAnim ' + result)
+    },
+    endGameAnim(result) {
+      Diagnostics.log('endGameAnim ' + result)
     },
 
-    endAnim() {
-      // bn.unsubscribe() //отписка
-      let tm = [true, true, true, true, true, true, true, true, true,]
-      let timeDelay = [0.05, 0.10, 0.2, 0.3, 0.8, 1.7] //zamenit na ms
-      // const timeNow = timeFrom.pinLastValue();
-      // const bn = timeFrom.monitor().subscribe(function (event) { topCardNumber0.newPositionXYZver2([1, 0, this.this.posZ[0]], [1 - 0.5, 0 + 0.2, 2 + 0.3], 500, 1) });
-      // const bn = timeFrom.monitor().subscribe(() => Diagnostics.log(this.this.posX[0]));
-      const bn = timeFrom.monitor().subscribe(() => {
-
-        // Diagnostics.log(this.posX[2])
-
-        if (timeFrom.pinLastValue() > timeNow + timeDelay[0] && tm[0]) {
-          tm[0] = false
-          topCardNumber0.newPositionXYZver2([this.posX[0], 0, this.posZ[0]], [this.posX[2] - 0.5, 0 + 0.2, this.posZ[0] + 0.3], 500, 1)
-          topCardNumber0.vrashenieZ(0, 0.1, 1250)
-          topCardNumber0.vrashenieY(0, -1, 1250)
-          topCardNumber2.size(1.2, 1500)
-
-        }
-        if (timeFrom.pinLastValue() > timeNow + timeDelay[1] && tm[1]) {
-          tm[1] = false
-          topCardNumber3.newPositionXYZver2([this.posX[3], 0, this.posZ[0]], [this.posX[2] - 0.5, 0 + 0.2, this.posZ[0] + 0.3], 500, 1)
-          topCardNumber3.vrashenieZ(0, 0.1, 1250)
-          topCardNumber3.vrashenieY(0, -1, 1250)
-        }
-        if (timeFrom.pinLastValue() > timeNow + timeDelay[2] && tm[2]) {
-          tm[2] = false
-          topCardNumber1.newPositionXYZver2([this.posX[1], 0, this.posZ[0]], [this.posX[2] - 0.5, 0 + 0.2, this.posZ[0] + 0.3], 500, 1)
-          topCardNumber1.vrashenieZ(0, 0.1, 1250)
-          topCardNumber1.vrashenieY(0, -1, 1250)
-        }
-        if (timeFrom.pinLastValue() > timeNow + timeDelay[3] && tm[3]) {
-          tm[3] = false
-          topCardNumber4.newPositionXYZver2([this.posX[4], 0, this.posZ[0]], [this.posX[2] - 0.5, 0 + 0.2, this.posZ[0] + 0.3], 500, 1)
-          topCardNumber4.vrashenieZ(0, 0.1, 1250)
-          topCardNumber4.vrashenieY(0, -1, 1250)
-        }
-        if (timeFrom.pinLastValue() > timeNow + timeDelay[4] && tm[4]) {
-          // bn.unsubscribe() //отписка
-          tm[4] = false
-          topCardNumber2.newPositionXYZver2([this.posX[2], 0, this.posZ[0]], [this.posX[2] - 0.5, 0 + 0.2, this.posZ[0] + 0.3], 500, 1)
-          topCardNumber2.vrashenieZ(0, 0.1, 1250)
-          topCardNumber2.vrashenieY(0, -1, 1250)
-        }
-        if (timeFrom.pinLastValue() > timeNow + timeDelay[5] && tm[5]) {
-          Diagnostics.log('zero zy')
-          tm[5] = false
-          topCardNumber0.vrashenieZ(0, 0, 1250)
-          topCardNumber1.vrashenieY(0, 0, 1250)
-          topCardNumber1.vrashenieZ(0, 0, 1250)
-          topCardNumber2.vrashenieY(0, 0, 1250)
-          topCardNumber2.vrashenieZ(0, 0, 1250)
-          topCardNumber3.vrashenieY(0, 0, 1250)
-          topCardNumber3.vrashenieZ(0, 0, 1250)
-          topCardNumber4.vrashenieY(0, 0, 1250)
-          topCardNumber4.vrashenieZ(0, 0, 1250)
-          bn.unsubscribe() //отписка
-          topCardNumber2.sizeReset()
-          // animSecond(mainArray.arr[numMain], secondArray.arr[numScnd])
-        }
-      }
-      );
-    }
   }
 
   //////////////////////////////////////////////////////////CODE
