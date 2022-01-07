@@ -22,6 +22,7 @@ import * as MP from './MyPoint';
 
 
   const timeFrom = await Patches.outputs.getScalar("timeFromPath"); // время с запуска игры
+  const timeNow = timeFrom.pinLastValue();
 
 
   /// вывод тестовой информации
@@ -88,6 +89,85 @@ import * as MP from './MyPoint';
 
   const [start_tap,] = await Promise.all([Scene.root.findFirst('start_tap'),])
   let startButton = new Osc.OnScene(start_tap)
+
+
+  //cardAnim
+  const [
+    mainCard, matMainCard,
+
+    topCard0, mattopCard0,
+    topCard1, mattopCard1,
+    topCard2, mattopCard2,
+    topCard3, mattopCard3,
+    topCard4, mattopCard4,
+
+    texture0, texture1, texture2, texture3, texture4,
+    texture5, texture6, texture7, texture8, texture9,
+    texture10, texture11, texture12, texture13, texture14,
+    texture15, texture16, texture17, texture18, texture19,
+    // texture20, texture21, texture22, texture23, texture24,
+    // texture25, texture26, texture27, texture28, texture29,
+
+    textureSecond0, textureSecond1, textureSecond2, textureSecond3, textureSecond4,
+    textureSecond5, textureSecond6, textureSecond7, textureSecond8, textureSecond9,
+    textureSecond10, textureSecond11, textureSecond12, textureSecond13, textureSecond14,
+    textureSecond15, textureSecond16, textureSecond17, textureSecond18, textureSecond19,
+    // textureSecond20, textureSecond21, textureSecond22, textureSecond23, textureSecond24,
+    // textureSecond25, textureSecond26, textureSecond27, textureSecond28, textureSecond29,
+    rubashka
+
+  ] = await Promise.all([
+    Scene.root.findFirst('mainCard'), Materials.findFirst('matMainCard'),
+
+    Scene.root.findFirst('topCard0'), Materials.findFirst('mattopCard0'),
+    Scene.root.findFirst('topCard1'), Materials.findFirst('mattopCard1'),
+    Scene.root.findFirst('topCard2'), Materials.findFirst('mattopCard2'),
+    Scene.root.findFirst('topCard3'), Materials.findFirst('mattopCard3'),
+    Scene.root.findFirst('topCard4'), Materials.findFirst('mattopCard4'),
+
+    Textures.findFirst('card – 0'), Textures.findFirst('card – 1'), Textures.findFirst('card – 2'), Textures.findFirst('card – 3'), Textures.findFirst('card – 4'),
+    Textures.findFirst('card – 5'), Textures.findFirst('card – 6'), Textures.findFirst('card – 7'), Textures.findFirst('card – 8'), Textures.findFirst('card – 9'),
+    Textures.findFirst('card – 10'), Textures.findFirst('card – 11'), Textures.findFirst('card – 12'), Textures.findFirst('card – 13'), Textures.findFirst('card – 14'),
+    Textures.findFirst('card – 15'), Textures.findFirst('card – 16'), Textures.findFirst('card – 17'), Textures.findFirst('card – 18'), Textures.findFirst('card – 19'),
+    // Textures.findFirst('card – 20'), Textures.findFirst('card – 21'), Textures.findFirst('card – 22'), Textures.findFirst('card – 23'), Textures.findFirst('card – 24'),
+    // Textures.findFirst('card – 25'), Textures.findFirst('card – 26'), Textures.findFirst('card – 27'), Textures.findFirst('card – 28'), Textures.findFirst('card – 29'),
+
+    Textures.findFirst('cardSecond – 0'), Textures.findFirst('cardSecond – 1'), Textures.findFirst('cardSecond – 2'), Textures.findFirst('cardSecond – 3'), Textures.findFirst('cardSecond – 4'),
+    Textures.findFirst('cardSecond – 5'), Textures.findFirst('cardSecond – 6'), Textures.findFirst('cardSecond – 7'), Textures.findFirst('cardSecond – 8'), Textures.findFirst('cardSecond – 9'),
+    Textures.findFirst('cardSecond – 10'), Textures.findFirst('cardSecond – 11'), Textures.findFirst('cardSecond – 12'), Textures.findFirst('cardSecond – 13'), Textures.findFirst('cardSecond – 14'),
+    Textures.findFirst('cardSecond – 15'), Textures.findFirst('cardSecond – 16'), Textures.findFirst('cardSecond – 17'), Textures.findFirst('cardSecond – 18'), Textures.findFirst('cardSecond – 19'),
+    // Textures.findFirst('cardSecond – 20'), Textures.findFirst('cardSecond – 21'), Textures.findFirst('cardSecond – 22'), Textures.findFirst('cardSecond – 23'), Textures.findFirst('cardSecond – 24'),
+    // Textures.findFirst('cardSecond – 25'), Textures.findFirst('cardSecond – 26'), Textures.findFirst('cardSecond – 27'), Textures.findFirst('cardSecond – 28'), Textures.findFirst('cardSecond – 29'),
+    Textures.findFirst('rubashka')
+  ])
+
+
+  let textureArray = [texture0, texture1, texture2, texture3, texture4,
+    texture5, texture6, texture7, texture8, texture9,
+    texture10, texture11, texture12, texture13, texture14,
+    texture15, texture16, texture17, texture18, texture19,
+    // texture20, texture21, texture22, texture23, texture24,
+    // texture25, texture26, texture27, texture28, texture29,
+    rubashka]
+
+  let textureArrayScecond = [textureSecond0, textureSecond1, textureSecond2, textureSecond3, textureSecond4,
+    textureSecond5, textureSecond6, textureSecond7, textureSecond8, textureSecond9,
+    textureSecond10, textureSecond11, textureSecond12, textureSecond13, textureSecond14,
+    textureSecond15, textureSecond16, textureSecond17, textureSecond18, textureSecond19,
+    // textureSecond20, textureSecond21, textureSecond22, textureSecond23, textureSecond24,
+    // textureSecond25, textureSecond26, textureSecond27, textureSecond28, textureSecond29,
+    rubashka]
+
+
+  let mainCardCl = new Osc.OnScene(mainCard, matMainCard, textureArray)
+
+  let topCardNumber0 = new Osc.OnScene(topCard0, mattopCard0, textureArrayScecond)
+  let topCardNumber1 = new Osc.OnScene(topCard1, mattopCard1, textureArrayScecond)
+  let topCardNumber2 = new Osc.OnScene(topCard2, mattopCard2, textureArrayScecond)
+  let topCardNumber3 = new Osc.OnScene(topCard3, mattopCard3, textureArrayScecond)
+  let topCardNumber4 = new Osc.OnScene(topCard4, mattopCard4, textureArrayScecond)
+
+  //
 
 
 
@@ -269,8 +349,7 @@ import * as MP from './MyPoint';
     },
 
     endGameFunction() {
-      Diagnostics.log('TEST_END_GAME')
-      GameCore.isReadyToAnswer = false
+      GameCore.endGame()
     },
 
     coreAnswer(x) {
@@ -301,35 +380,70 @@ import * as MP from './MyPoint';
   let GameCore = {
     answer: ['verno', 'neVerno', 'next'],
     isReadyToAnswer: false,
-
+    
     get monitor() {
       let texOut =
         `ReadyToAnswer: ${this.isReadyToAnswer}`
-      return texOut
-    },
-
-    preparation() {// подготовка к игре
-      this.isReadyToAnswer = false
-    },
-
-    mainCycle() { // главный цикл
-      this.isReadyToAnswer = true
-    },
-
-    resultCheck(x) { // проверка при ответе
-      if (x === 0 && this.isReadyToAnswer) {
-        return 'verno'
-      }
-      if (x === 1 && this.isReadyToAnswer) {
-        return 'neVerno'
-      }
-      if (x === 2 && this.isReadyToAnswer) {
-        return 'next'
+        return texOut
+      },
+      
+      preparation() {// подготовка к игре
+        this.isReadyToAnswer = false
+        //test animation
+        AnimationInGame.preparationAnim()
+      },
+      
+      mainCycle() { // главный цикл
+        this.isReadyToAnswer = true
+        AnimationInGame.mainCycleAnim()
+      },
+      
+      endGame() { // главный цикл
+        this.isReadyToAnswer = false
+        AnimationInGame.endGameAnim(GameService.howEnd)
+        
+      },
+      
+      resultCheck(x) { // проверка при ответе
+        let result
+        if (x === 0 && this.isReadyToAnswer) {
+          result = 'verno'
+        }
+        if (x === 1 && this.isReadyToAnswer) {
+          result = 'neVerno'
+        }
+        if (x === 2 && this.isReadyToAnswer) {
+          result = 'next'
+        }
+        
+        if (this.isReadyToAnswer) {
+          AnimationInGame.resultAnim(result + x)
+          return result
+        }
       }
     }
-  }
+    
+    //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
+    let AnimationInGame = {
+      
+    test() {
+      Diagnostics.log('testAnim')
+    },
 
-  let AnimationInGame = {}
+    preparationAnim() {
+      Diagnostics.log('prepAnimation')
+    },
+    mainCycleAnim() {
+      Diagnostics.log('mainCycleAnim')
+    },
+    resultAnim(result) {
+      Diagnostics.log('resultAnim ' + result)
+    },
+    endGameAnim(result) {
+      Diagnostics.log('endGameAnim ' + result)
+    },
+
+  }
 
   //////////////////////////////////////////////////////////CODE
   GameAction.globalReset()
