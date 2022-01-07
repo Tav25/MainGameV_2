@@ -10,7 +10,7 @@ const Patches = require("Patches");
 
 
 import * as Osc from './OnScene'; //класс объектов на сцена
-// import * as Ma from './MyArray'; // работа с массивом
+import * as Ma from './MyArray'; // работа с массивом
 import * as MText from './MyText'; // работа с текстом
 import * as MP from './MyPoint';
 
@@ -377,55 +377,73 @@ import * as MP from './MyPoint';
   }
 
   ////////////////////////////////////////////////////////////////
+  const mainArray = new Ma.MyArray(20)
+  const secondArray = new Ma.MyArray(5)
+
+  function secondArrayProcess() {//подготовка доп массива
+    secondArray.mArray()
+    // secondArray.shuffle()
+    secondArray.repl(mainArray.arrMod, 0)
+  }
+
   let GameCore = {
     answer: ['verno', 'neVerno', 'next'],
     isReadyToAnswer: false,
-    
+
     get monitor() {
       let texOut =
         `ReadyToAnswer: ${this.isReadyToAnswer}`
-        return texOut
-      },
-      
-      preparation() {// подготовка к игре
-        this.isReadyToAnswer = false
-        //test animation
-        AnimationInGame.preparationAnim()
-      },
-      
-      mainCycle() { // главный цикл
-        this.isReadyToAnswer = true
-        AnimationInGame.mainCycleAnim()
-      },
-      
-      endGame() { // главный цикл
-        this.isReadyToAnswer = false
-        AnimationInGame.endGameAnim(GameService.howEnd)
-        
-      },
-      
-      resultCheck(x) { // проверка при ответе
-        let result
-        if (x === 0 && this.isReadyToAnswer) {
-          result = 'verno'
-        }
-        if (x === 1 && this.isReadyToAnswer) {
-          result = 'neVerno'
-        }
-        if (x === 2 && this.isReadyToAnswer) {
-          result = 'next'
-        }
-        
-        if (this.isReadyToAnswer) {
-          AnimationInGame.resultAnim(result + x)
-          return result
-        }
+      return texOut
+    },
+
+
+    preparation() {// подготовка к игре
+      this.isReadyToAnswer = false
+      AnimationInGame.preparationAnim()
+      ///
+      mainArray.shuffle()
+      mainArray.mArray2(5)
+      Diagnostics.log(mainArray.arrMod)
+      ///
+    },
+
+    mainCycle() { // главный цикл
+      this.isReadyToAnswer = true
+      AnimationInGame.mainCycleAnim()
+      secondArrayProcess()
+      Diagnostics.log(secondArray)
+    },
+
+    endGame() { // главный цикл
+      this.isReadyToAnswer = false
+      AnimationInGame.endGameAnim(GameService.howEnd)
+
+    },
+
+    resultCheck(x = NaN) { // проверка при ответе
+      x = proverkaRezultata(x);
+
+      let result
+      if (x === 0 && this.isReadyToAnswer) {
+        result = 'neVerno'
+      }
+      if (x === 1 && this.isReadyToAnswer) {
+        result = 'verno'
+      }
+      if (x === 2 && this.isReadyToAnswer) {
+        result = 'next'
+      }
+
+      if (this.isReadyToAnswer) {
+        AnimationInGame.resultAnim(result + x)
+        return result
       }
     }
-    
-    //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
-    let AnimationInGame = {
-      
+  }
+
+  //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
+  let AnimationInGame = {
+
     test() {
       Diagnostics.log('testAnim')
     },
@@ -456,6 +474,13 @@ import * as MP from './MyPoint';
     counter++
     vuvodInformacii(GameService.monitor + GameCore.monitor)
   }, 250)
+  function proverkaRezultata(x) {
+    if (mainArray.arrMod[0] === secondArray.arr[0]) {
+      x = 1;
+    }
+    return x;
+  }
+
   //////////////////////////////////////////////////////////
 
   function stopIntervalTimer(rc) {// остановка таймера
