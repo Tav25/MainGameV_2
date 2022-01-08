@@ -19,6 +19,13 @@ class MyArray {
     }
 
 
+    delFirst(){
+        this.arr.shift()
+        // Diagnostics.log(this.arr)
+        this.arr = this.arr
+    }
+
+
     mArray() {
 
         this.arr = Array.apply(null, { length: this.number }).map(Number.call, Number)

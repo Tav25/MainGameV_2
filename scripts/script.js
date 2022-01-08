@@ -169,12 +169,10 @@ import * as MP from './MyPoint';
 
   //
 
-
-
   let GameService = {
     point: 0,
     pointMin: 0,
-    pointMax: 5,
+    pointMax: 20,
 
     health: 3,
     healthMin: 0,
@@ -194,14 +192,11 @@ import * as MP from './MyPoint';
     mainButtonOptions: ['start', 'stop', 'reset',],
     mainButtonFunction: [0, 1, 2],
 
-
-
-
     get monitor() {
       let texOut =
         `p: ${this.pointGet} h: ${this.healthGet} s: ${this.step}
       isisGame: ${this.isGame}  ${this.howEnd}
-      mainBOp: ${this.mainButtonOptions[this.mainButtonPosition]} mainPos: ${this.mainButtonPosition}
+      mainBOp: ${this.mainButtonOptions[this.mainButtonPosition]}
       `
       return texOut
     },
@@ -280,7 +275,7 @@ import * as MP from './MyPoint';
     },
 
     stepUp() {
-      this.stepSet = this.stepGet + 1
+      this.stepSet = this.step + 1
     },
 
     set stepSet(value) {
@@ -288,16 +283,6 @@ import * as MP from './MyPoint';
     },
     //
   }
-  // Diagnostics.log(GameService.point)
-  // GameService.pointSet = 15
-  // GameService.pointUp()
-  // GameService.healthDown()
-  // GameService.gameReset()
-  // GameService.tapMainButton()
-  ///////////////////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////////////////
-
 
   /////////////////////////////////////////////////////////
 
@@ -310,11 +295,11 @@ import * as MP from './MyPoint';
   });
 
   TouchGestures.onTap(testYes).subscribe((gesture) => {
-    GameAction.coreAnswer(GameCore.resultCheck(0))
+    GameAction.coreAnswer(GameCore.resultCheck(1))
   });
 
   TouchGestures.onTap(testNo).subscribe((gesture) => {
-    GameAction.coreAnswer(GameCore.resultCheck(1))
+    GameAction.coreAnswer(GameCore.resultCheck(0))
   });
 
 
@@ -353,6 +338,7 @@ import * as MP from './MyPoint';
     },
 
     coreAnswer(x) {
+      GameService.stepUp()
       if (x === 'verno') {
         this.gameCycleTrue()
       }
@@ -360,6 +346,7 @@ import * as MP from './MyPoint';
         this.gameCycleFalse()
       }
       if (x === 'next') {
+        this.gameCycleNext()
         //ather action
       }
     },
@@ -374,54 +361,46 @@ import * as MP from './MyPoint';
       GameService.healthDown()
       this.checkEndGame()
     },
+
+    gameCycleNext() {
+      this.checkEndGame()
+    },
   }
 
   ////////////////////////////////////////////////////////////////
-  const mainArray = new Ma.MyArray(20)
-  const secondArray = new Ma.MyArray(5)
-
-  function secondArrayProcess() {//подготовка доп массива
-    secondArray.mArray()
-    // secondArray.shuffle()
-    secondArray.repl(mainArray.arrMod, 0)
-  }
+  const { mainArray, secondArray } = podgotovkaGameCore();
 
   let GameCore = {
     answer: ['verno', 'neVerno', 'next'],
     isReadyToAnswer: false,
+    resultCore: undefined,
 
     get monitor() {
       let texOut =
-        `ReadyToAnswer: ${this.isReadyToAnswer}`
+        `ReadyToAnswer: ${this.isReadyToAnswer}
+resultCore: ${this.resultCore}`
       return texOut
     },
 
 
     preparation() {// подготовка к игре
       this.isReadyToAnswer = false
-      AnimationInGame.preparationAnim()
-      ///
-      mainArray.shuffle()
-      mainArray.mArray2(5)
-      Diagnostics.log(mainArray.arrMod)
-      ///
+      preparationFunction();
     },
 
     mainCycle() { // главный цикл
       this.isReadyToAnswer = true
-      AnimationInGame.mainCycleAnim()
-      secondArrayProcess()
-      Diagnostics.log(secondArray)
+      mainCycleFunction(this.resultCore);
     },
 
-    endGame() { // главный цикл
+    endGame() { // главный циклё
       this.isReadyToAnswer = false
-      AnimationInGame.endGameAnim(GameService.howEnd)
+      endGameFunction();
 
     },
 
-    resultCheck(x = NaN) { // проверка при ответе
-      x = proverkaRezultata(x);
+    resultCheck(y = NaN) { // проверка при ответе
+      let x = answerVerification(y);
 
       let result
       if (x === 0 && this.isReadyToAnswer) {
@@ -435,7 +414,7 @@ import * as MP from './MyPoint';
       }
 
       if (this.isReadyToAnswer) {
-        AnimationInGame.resultAnim(result + x)
+        this.resultCore = result
         return result
       }
     }
@@ -444,14 +423,34 @@ import * as MP from './MyPoint';
   //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
   let AnimationInGame = {
 
+    rub: 20,
+
     test() {
       Diagnostics.log('testAnim')
     },
 
     preparationAnim() {
       Diagnostics.log('prepAnimation')
+
+      topCardNumber0.replaseMaterialObj(this.rub)
+      topCardNumber1.replaseMaterialObj(this.rub)
+      topCardNumber2.replaseMaterialObj(this.rub)
+      topCardNumber3.replaseMaterialObj(this.rub)
+      topCardNumber4.replaseMaterialObj(this.rub)
+      mainCardCl.replaseMaterialObj(this.rub)
+
+      topCardNumber0.opacity([0, 1], 900)
+      topCardNumber1.opacity([0, 1], 900)
+      topCardNumber2.opacity([0, 1], 900)
+      topCardNumber3.opacity([0, 1], 900)
+      topCardNumber4.opacity([0, 1], 900)
+      mainCardCl.opacity([0, 1], 900)
+
     },
+
     mainCycleAnim() {
+      topCardNumber2.replaseMaterialObj(secondArray.arr[0])
+      mainCardCl.replaseMaterialObj(mainArray.arrMod[0])
       Diagnostics.log('mainCycleAnim')
     },
     resultAnim(result) {
@@ -465,27 +464,84 @@ import * as MP from './MyPoint';
 
   //////////////////////////////////////////////////////////CODE
   GameAction.globalReset()
-
-
-
   //////////////////////////////////////////////////////////
-  let counter = 0
-  const ng4 = Time.setInterval(() => {
-    counter++
-    vuvodInformacii(GameService.monitor + GameCore.monitor)
-  }, 250)
-  function proverkaRezultata(x) {
-    if (mainArray.arrMod[0] === secondArray.arr[0]) {
-      x = 1;
-    }
-    return x;
-  }
 
-  //////////////////////////////////////////////////////////
+
+
+
+
 
   function stopIntervalTimer(rc) {// остановка таймера
     Time.clearInterval(rc);
   }
+
+  let counter = 0
+  const ng4 = Time.setInterval(() => {
+    counter++
+    vuvodInformacii(GameService.monitor + GameCore.monitor + process())
+  }, 250)///////////////////////////////////////////////////////////////////
+  function process() {
+    return `
+    -----
+    ${secondArray.arr} 
+    ${mainArray.arrMod} >> lenght ${mainArray.arrMod.length}
+    | ${secondArray.arr[0]} | ${mainArray.arrMod[0]} | ${mainArray.arrMod[0] === secondArray.arr[0]}
+    
+    `
+  }
+
+  function podgotovkaGameCore() {
+    const numberOfQuestions = 20;
+    const numberCardOnBoard = 5;
+    const mainArray = new Ma.MyArray(numberOfQuestions);
+    const secondArray = new Ma.MyArray(numberCardOnBoard);
+    return { mainArray, secondArray };
+  }
+
+  function preparationFunction() {
+    AnimationInGame.preparationAnim();
+    mainArray.shuffle();
+    mainArray.mArray2(8);
+  }
+
+  function mainCycleFunction(res) {
+    if (res === undefined) {
+      Diagnostics.log('FirstAnimation0')
+    }
+    if (res === 'verno' || res === 'neVerno') {
+      mainArray.arrMod.shift()
+      secondArrayProcess()
+    }
+    if (secondArray.arr.length === 5 || GameService.step === 0) {
+      Diagnostics.log('FirstAnimation1')
+      secondArrayProcess();
+    }
+    AnimationInGame.mainCycleAnim();
+  }
+
+  function answerVerification(x) {
+    let resultAnswerVerification
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { resultAnswerVerification = 1; }
+    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 1) { resultAnswerVerification = 0; }
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 0) { resultAnswerVerification = 0; }
+    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 0) { resultAnswerVerification = 2; }
+    if (x === 2) (resultAnswerVerification = 2)
+    secondArray.delFirst()
+    return resultAnswerVerification
+
+  }
+
+  function endGameFunction() {
+    AnimationInGame.endGameAnim(GameService.howEnd);
+  }
+
+  function secondArrayProcess() {//подготовка доп массива
+    secondArray.mArray()
+    secondArray.shuffle()
+    secondArray.repl(mainArray.arrMod, 0)
+  }
+  //////////////////////////////////////////////////////////
+
 
 
 
