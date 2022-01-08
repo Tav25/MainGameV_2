@@ -172,7 +172,7 @@ import * as MP from './MyPoint';
   let GameService = {
     point: 0,
     pointMin: 0,
-    pointMax: 5,
+    pointMax: 20,
 
     health: 3,
     healthMin: 0,
@@ -395,12 +395,12 @@ resultCore: ${this.resultCore}`
 
     endGame() { // главный циклё
       this.isReadyToAnswer = false
-      andGaeeFunction();
+      endGameFunction();
 
     },
 
     resultCheck(y = NaN) { // проверка при ответе
-      let x = proverkaRezultata(y);
+      let x = answerVerification(y);
 
       let result
       if (x === 0 && this.isReadyToAnswer) {
@@ -484,7 +484,7 @@ resultCore: ${this.resultCore}`
     return `
     -----
     ${secondArray.arr} 
-    ${mainArray.arrMod}
+    ${mainArray.arrMod} >> lenght ${mainArray.arrMod.length}
     | ${secondArray.arr[0]} | ${mainArray.arrMod[0]} | ${mainArray.arrMod[0] === secondArray.arr[0]}
     
     `
@@ -501,29 +501,33 @@ resultCore: ${this.resultCore}`
   function preparationFunction() {
     AnimationInGame.preparationAnim();
     mainArray.shuffle();
-    mainArray.mArray2(5);
+    mainArray.mArray2(8);
   }
 
   function mainCycleFunction(res) {
+    if (res === undefined) {
+      Diagnostics.log('FirstAnimation0')
+    }
     if (res === 'verno' || res === 'neVerno') {
       mainArray.arrMod.shift()
       secondArrayProcess()
     }
     if (secondArray.arr.length === 5 || GameService.step === 0) {
+      Diagnostics.log('FirstAnimation1')
       secondArrayProcess();
     }
     AnimationInGame.mainCycleAnim();
   }
 
-  function proverkaRezultata(x) {
-    let a
-    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { a = 1; }
-    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 1) { a = 0; }
-    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 0) { a = 0; }
-    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 0) { a = 2; }
-    if (x === 2) (a = 2)
+  function answerVerification(x) {
+    let resultAnswerVerification
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { resultAnswerVerification = 1; }
+    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 1) { resultAnswerVerification = 0; }
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 0) { resultAnswerVerification = 0; }
+    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 0) { resultAnswerVerification = 2; }
+    if (x === 2) (resultAnswerVerification = 2)
     secondArray.delFirst()
-    return a
+    return resultAnswerVerification
 
   }
 
