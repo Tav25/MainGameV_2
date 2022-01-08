@@ -353,6 +353,7 @@ import * as MP from './MyPoint';
     },
 
     coreAnswer(x) {
+      GameService.stepUp()
       if (x === 'verno') {
         this.gameCycleTrue()
       }
@@ -360,6 +361,7 @@ import * as MP from './MyPoint';
         this.gameCycleFalse()
       }
       if (x === 'next') {
+        this.gameCycleNext()
         //ather action
       }
     },
@@ -374,6 +376,10 @@ import * as MP from './MyPoint';
       GameService.healthDown()
       this.checkEndGame()
     },
+
+    gameCycleNext() {
+      this.checkEndGame()
+    },
   }
 
   ////////////////////////////////////////////////////////////////
@@ -382,27 +388,24 @@ import * as MP from './MyPoint';
   let GameCore = {
     answer: ['verno', 'neVerno', 'next'],
     isReadyToAnswer: false,
+    resultCore: undefined,
 
     get monitor() {
       let texOut =
-        `ReadyToAnswer: ${this.isReadyToAnswer}`
+        `ReadyToAnswer: ${this.isReadyToAnswer}
+resultCore: ${this.resultCore}`
       return texOut
     },
 
 
     preparation() {// подготовка к игре
       this.isReadyToAnswer = false
-      AnimationInGame.preparationAnim()
-      ///
-      mainArray.shuffle()
-      mainArray.mArray2(5)
-      Diagnostics.log(mainArray.arrMod)
-      ///
+      preparationFunction();
     },
 
     mainCycle() { // главный цикл
       this.isReadyToAnswer = true
-      mainCycleFunction();
+      mainCycleFunction(this.resultCore);
     },
 
     endGame() { // главный цикл
@@ -412,7 +415,6 @@ import * as MP from './MyPoint';
     },
 
     resultCheck(y = NaN) { // проверка при ответе
-      GameService.stepUp()
       let x = proverkaRezultata(y);
 
       let result
@@ -428,6 +430,7 @@ import * as MP from './MyPoint';
 
       if (this.isReadyToAnswer) {
         AnimationInGame.resultAnim(result + x)
+        this.resultCore = result
         return result
       }
     }
@@ -436,7 +439,7 @@ import * as MP from './MyPoint';
   //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
   let AnimationInGame = {
 
-    rub:20,
+    rub: 20,
 
     test() {
       Diagnostics.log('testAnim')
@@ -460,9 +463,10 @@ import * as MP from './MyPoint';
       mainCardCl.opacity([0, 1], 900)
 
     },
+
     mainCycleAnim() {
       topCardNumber2.replaseMaterialObj(secondArray.arr[0])
-      mainCardCl.replaseMaterialObj(mainArray.arr[0])
+      mainCardCl.replaseMaterialObj(mainArray.arrMod[0])
       Diagnostics.log('mainCycleAnim')
     },
     resultAnim(result) {
@@ -479,6 +483,7 @@ import * as MP from './MyPoint';
 
 
 
+
   //////////////////////////////////////////////////////////
 
   function stopIntervalTimer(rc) {// остановка таймера
@@ -488,8 +493,18 @@ import * as MP from './MyPoint';
   let counter = 0
   const ng4 = Time.setInterval(() => {
     counter++
-    vuvodInformacii(GameService.monitor + GameCore.monitor)
+    vuvodInformacii(GameService.monitor + GameCore.monitor + process())
   }, 250)///////////////////////////////////////////////////////////////////
+  function process() {
+    return `
+    -----
+    ${secondArray.arr} 
+    ${mainArray.arrMod}
+| ${secondArray.arr[0]} | ${mainArray.arrMod[0]} | ${mainArray.arrMod[0] === secondArray.arr[0]}
+
+    `
+  }
+
   function podgotovkaGameCore() {
     const numberOfQuestions = 20;
     const numberCardOnBoard = 5;
@@ -498,28 +513,38 @@ import * as MP from './MyPoint';
     return { mainArray, secondArray };
   }
 
-  function mainCycleFunction() {
-    Diagnostics.log(secondArray.arr.length);
+  function preparationFunction() {
+    AnimationInGame.preparationAnim();
+    mainArray.shuffle();
+    mainArray.mArray2(5);
+  }
+
+  function mainCycleFunction(res) {
+    if (res === 'verno' || res === 'neVerno') {
+      mainArray.arrMod.shift()
+      secondArrayProcess()
+    }
     if (secondArray.arr.length === 5 || GameService.step === 0) {
       secondArrayProcess();
-      Diagnostics.log('in ' + secondArray.arr.length);
     }
-    Diagnostics.log('>>>>' + secondArray.arr);
     AnimationInGame.mainCycleAnim();
   }
 
   function proverkaRezultata(x) {
-    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { x = 1; }
-    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 0) { x = 0; }
-    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 1) { x = 0; }
+    let a
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { a = 1; }
+    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 1) { a = 0; }
+    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 0) { a = 0; }
+    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 0) { a = 2; }
+    if (x === 2) (a = 2)
     secondArray.delFirst()
-    return x
+    return a
 
   }
 
   function secondArrayProcess() {//подготовка доп массива
     secondArray.mArray()
-    // secondArray.shuffle()
+    secondArray.shuffle()
     secondArray.repl(mainArray.arrMod, 0)
   }
   //////////////////////////////////////////////////////////
