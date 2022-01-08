@@ -201,7 +201,7 @@ import * as MP from './MyPoint';
       let texOut =
         `p: ${this.pointGet} h: ${this.healthGet} s: ${this.step}
       isisGame: ${this.isGame}  ${this.howEnd}
-      mainBOp: ${this.mainButtonOptions[this.mainButtonPosition]} mainPos: ${this.mainButtonPosition}
+      mainBOp: ${this.mainButtonOptions[this.mainButtonPosition]}
       `
       return texOut
     },
@@ -288,17 +288,7 @@ import * as MP from './MyPoint';
     },
     //
   }
-  // Diagnostics.log(GameService.point)
-  // GameService.pointSet = 15
-  // GameService.pointUp()
-  // GameService.healthDown()
-  // GameService.gameReset()
-  // GameService.tapMainButton()
-  ///////////////////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////////////////
-
-
+  
   /////////////////////////////////////////////////////////
 
   TouchGestures.onTap(startButton.obj).subscribe((gesture) => {
@@ -410,7 +400,7 @@ resultCore: ${this.resultCore}`
 
     endGame() { // главный цикл
       this.isReadyToAnswer = false
-      AnimationInGame.endGameAnim(GameService.howEnd)
+      andGaeeFunction();
 
     },
 
@@ -480,16 +470,17 @@ resultCore: ${this.resultCore}`
 
   //////////////////////////////////////////////////////////CODE
   GameAction.globalReset()
-
-
-
-
   //////////////////////////////////////////////////////////
 
+
+
+
+  
+  
   function stopIntervalTimer(rc) {// остановка таймера
     Time.clearInterval(rc);
   }
-
+  
   let counter = 0
   const ng4 = Time.setInterval(() => {
     counter++
@@ -500,11 +491,11 @@ resultCore: ${this.resultCore}`
     -----
     ${secondArray.arr} 
     ${mainArray.arrMod}
-| ${secondArray.arr[0]} | ${mainArray.arrMod[0]} | ${mainArray.arrMod[0] === secondArray.arr[0]}
-
+    | ${secondArray.arr[0]} | ${mainArray.arrMod[0]} | ${mainArray.arrMod[0] === secondArray.arr[0]}
+    
     `
   }
-
+  
   function podgotovkaGameCore() {
     const numberOfQuestions = 20;
     const numberCardOnBoard = 5;
@@ -512,13 +503,13 @@ resultCore: ${this.resultCore}`
     const secondArray = new Ma.MyArray(numberCardOnBoard);
     return { mainArray, secondArray };
   }
-
+  
   function preparationFunction() {
     AnimationInGame.preparationAnim();
     mainArray.shuffle();
     mainArray.mArray2(5);
   }
-
+  
   function mainCycleFunction(res) {
     if (res === 'verno' || res === 'neVerno') {
       mainArray.arrMod.shift()
@@ -529,7 +520,7 @@ resultCore: ${this.resultCore}`
     }
     AnimationInGame.mainCycleAnim();
   }
-
+  
   function proverkaRezultata(x) {
     let a
     if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { a = 1; }
@@ -539,9 +530,12 @@ resultCore: ${this.resultCore}`
     if (x === 2) (a = 2)
     secondArray.delFirst()
     return a
-
+    
   }
-
+  
+  function endGameFunction() {
+    AnimationInGame.endGameAnim(GameService.howEnd);
+  }
   function secondArrayProcess() {//подготовка доп массива
     secondArray.mArray()
     secondArray.shuffle()
