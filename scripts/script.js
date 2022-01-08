@@ -169,8 +169,6 @@ import * as MP from './MyPoint';
 
   //
 
-
-
   let GameService = {
     point: 0,
     pointMin: 0,
@@ -193,9 +191,6 @@ import * as MP from './MyPoint';
     mainButtonPosition: 0,
     mainButtonOptions: ['start', 'stop', 'reset',],
     mainButtonFunction: [0, 1, 2],
-
-
-
 
     get monitor() {
       let texOut =
@@ -288,7 +283,7 @@ import * as MP from './MyPoint';
     },
     //
   }
-  
+
   /////////////////////////////////////////////////////////
 
   TouchGestures.onTap(startButton.obj).subscribe((gesture) => {
@@ -398,7 +393,7 @@ resultCore: ${this.resultCore}`
       mainCycleFunction(this.resultCore);
     },
 
-    endGame() { // главный цикл
+    endGame() { // главный циклё
       this.isReadyToAnswer = false
       andGaeeFunction();
 
@@ -419,7 +414,6 @@ resultCore: ${this.resultCore}`
       }
 
       if (this.isReadyToAnswer) {
-        AnimationInGame.resultAnim(result + x)
         this.resultCore = result
         return result
       }
@@ -475,12 +469,12 @@ resultCore: ${this.resultCore}`
 
 
 
-  
-  
+
+
   function stopIntervalTimer(rc) {// остановка таймера
     Time.clearInterval(rc);
   }
-  
+
   let counter = 0
   const ng4 = Time.setInterval(() => {
     counter++
@@ -495,7 +489,7 @@ resultCore: ${this.resultCore}`
     
     `
   }
-  
+
   function podgotovkaGameCore() {
     const numberOfQuestions = 20;
     const numberCardOnBoard = 5;
@@ -503,13 +497,13 @@ resultCore: ${this.resultCore}`
     const secondArray = new Ma.MyArray(numberCardOnBoard);
     return { mainArray, secondArray };
   }
-  
+
   function preparationFunction() {
     AnimationInGame.preparationAnim();
     mainArray.shuffle();
     mainArray.mArray2(5);
   }
-  
+
   function mainCycleFunction(res) {
     if (res === 'verno' || res === 'neVerno') {
       mainArray.arrMod.shift()
@@ -520,7 +514,7 @@ resultCore: ${this.resultCore}`
     }
     AnimationInGame.mainCycleAnim();
   }
-  
+
   function proverkaRezultata(x) {
     let a
     if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { a = 1; }
@@ -530,12 +524,13 @@ resultCore: ${this.resultCore}`
     if (x === 2) (a = 2)
     secondArray.delFirst()
     return a
-    
+
   }
-  
+
   function endGameFunction() {
     AnimationInGame.endGameAnim(GameService.howEnd);
   }
+
   function secondArrayProcess() {//подготовка доп массива
     secondArray.mArray()
     secondArray.shuffle()
