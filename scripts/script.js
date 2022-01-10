@@ -356,12 +356,11 @@ resultCore: ${this.resultCore}`
   //////////////////////////////////////////////////////////CODE
   GameAction.globalReset()
   //////////////////////////////////////////////////////////
-
-
-
-
-
-
+  function updatePointsHelth(numZero2, GameService, numZero) {
+    numZero2.numberPoint(GameService.health);
+    numZero.numberPoint(GameService.point);
+  }
+  
   function stopIntervalTimer(rc) {// остановка таймера
     Time.clearInterval(rc);
   }
@@ -371,6 +370,8 @@ resultCore: ${this.resultCore}`
     counter++
     vuvodInformacii(GameService.monitor + GameCore.monitor + process())
   }, 250)///////////////////////////////////////////////////////////////////
+
+
   function process() {
     return `
     -----
@@ -433,13 +434,7 @@ resultCore: ${this.resultCore}`
   }
   //////////////////////////////////////////////////////////
 
-
-
-
 })();
 
-function updatePointsHelth(numZero2, GameService, numZero) {
-  numZero2.numberPoint(GameService.health);
-  numZero.numberPoint(GameService.point);
-}
+
 
