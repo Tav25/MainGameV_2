@@ -132,20 +132,31 @@ import * as MyGameService from './MyGameService';
   ] // 32 textures
 
 
+  // podlogka vopros otvet_left otvet_right galka
+
   const [
-    podlogka, _podlogka, 
-    vopros, _vopros, 
-    otvet_left, _otvet_left, 
-    otvet_right, _otvet_right, 
-    galka, _galka, 
-    ] = await Promise.all([
+    podlogka, _podlogka,
+    vopros, _vopros,
+    otvet_left, _otvet_left,
+    otvet_right, _otvet_right,
+    galka, _galka,
+  ] = await Promise.all([
     Scene.root.findFirst('podlogka'), Materials.findFirst('_podlogka'),
     Scene.root.findFirst('vopros'), Materials.findFirst('_vopros'),
     Scene.root.findFirst('otvet_left'), Materials.findFirst('_otvet_left'),
     Scene.root.findFirst('otvet_right'), Materials.findFirst('_otvet_right'),
-    Scene.root.findFirst('galka'), Materials.findFirst('galka'),
-    ]) // 5 obj and mat
-    
+    Scene.root.findFirst('galka'), Materials.findFirst('_galka'),
+  ]) // 5 obj and mat
+
+  let texArray = []
+
+  let podlogkaObj = new Osc.OnScene(podlogka, _podlogka, texArray)
+  let voprosObj = new Osc.OnScene(vopros, _vopros, texArrayVopros)
+  let otvet_leftObj = new Osc.OnScene(otvet_left, _otvet_left, texArrayOtvet)
+  let otvet_rightObj = new Osc.OnScene(otvet_right, _otvet_right, texArrayOtvet)
+  let galkaObj = new Osc.OnScene(galka, _galka, texArray)
+
+  voprosObj.replaseMaterialObj(25)
   //////////////////////////////////////////////////////////
   GameService.pointMax = 20
   GameService.healthMax = 5
