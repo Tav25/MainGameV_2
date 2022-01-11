@@ -131,7 +131,15 @@ import * as MyGameService from './MyGameService';
     otvet_30, otvet_31,
   ] // 32 textures
 
+  const [
+    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+  ] = await Promise.all([
+    Textures.findFirst('_textureSecond_0'), Textures.findFirst('_textureSecond_1'), Textures.findFirst('_textureSecond_2'), Textures.findFirst('_textureSecond_3'),
+  ])
 
+  let texArray = [
+    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+  ] // 4 textures
   // podlogka vopros otvet_left otvet_right galka
 
   const [
@@ -148,8 +156,6 @@ import * as MyGameService from './MyGameService';
     Scene.root.findFirst('galka'), Materials.findFirst('_galka'),
   ]) // 5 obj and mat
 
-  let texArray = []
-
   let podlogkaObj = new Osc.OnScene(podlogka, _podlogka, texArray)
   let voprosObj = new Osc.OnScene(vopros, _vopros, texArrayVopros)
   let otvet_leftObj = new Osc.OnScene(otvet_left, _otvet_left, texArrayOtvet)
@@ -160,6 +166,9 @@ import * as MyGameService from './MyGameService';
   //////////////////////////////////////////////////////////
   GameService.pointMax = 20
   GameService.healthMax = 5
+
+  Diagnostics.log(GameService.isGame)
+  Diagnostics.log(GameService.point)
 
   //////////////////////////////////////////////////////todo
 
