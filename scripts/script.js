@@ -370,11 +370,15 @@ resultCore: ${this.resultCore}`
   function preparationFunction() {
     mainArray.shuffle();
     AnimationInGame.preparationAnim()
-
   }
 
   function mainCycleFunction(res) {
-
+    if (res === undefined) {
+      Diagnostics.log('FirstAnimation0')
+    }
+    if (res === 'verno' || res === 'neVerno') {
+      mainArray.arr.shift()
+    }
   }
 
   function answerVerification(x) {
