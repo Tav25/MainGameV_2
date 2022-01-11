@@ -258,7 +258,7 @@ import * as MyGameService from './MyGameService';
   }
 
   ////////////////////////////////////////////////////////////////
-  // podgotomka
+  const { mainArray } = podgotovkaGameCore();
   ////////////////////////////////////////////////////////////////
 
   let GameCore = {
@@ -321,6 +321,7 @@ resultCore: ${this.resultCore}`
 
     preparationAnim() {
       Diagnostics.log('prepAnimation')
+      voprosObj.replaseMaterialObj(mainArray.arr[0])
     },
 
     mainCycleAnim() {
@@ -355,16 +356,20 @@ resultCore: ${this.resultCore}`
 
 
   function monitorSpec() {
-    return `
-    -----
+    return `-----
+    ${mainArray.arr}
     `
   }
 
   function podgotovkaGameCore() {
-
+    const numberOfQuestions = 32;
+    const mainArray = new Ma.MyArray(numberOfQuestions);
+    return { mainArray };
   }
 
   function preparationFunction() {
+    mainArray.shuffle();
+    AnimationInGame.preparationAnim()
 
   }
 
