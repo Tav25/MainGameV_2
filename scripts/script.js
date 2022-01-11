@@ -90,15 +90,87 @@ import * as MyGameService from './MyGameService';
   let startButton = new Osc.OnScene(start_tap)
 
 
-  //cardAnim
-
-
-  //
-  //////////////////////////////////////////////////////////
   let GameService = MyGameService.GameService;
+
+  //////////////////////////////////////////////////////todo:
+  const [
+    vopros_0, vopros_1, vopros_2, vopros_3, vopros_4, vopros_5, vopros_6, vopros_7, vopros_8, vopros_9,
+    vopros_10, vopros_11, vopros_12, vopros_13, vopros_14, vopros_15, vopros_16, vopros_17, vopros_18, vopros_19,
+    vopros_20, vopros_21, vopros_22, vopros_23, vopros_24, vopros_25, vopros_26, vopros_27, vopros_28, vopros_29,
+    vopros_30, vopros_31,
+  ] = await Promise.all([
+    Textures.findFirst('_vopros-0'), Textures.findFirst('_vopros-1'), Textures.findFirst('_vopros-2'), Textures.findFirst('_vopros-3'), Textures.findFirst('_vopros-4'), Textures.findFirst('_vopros-5'), Textures.findFirst('_vopros-6'), Textures.findFirst('_vopros-7'), Textures.findFirst('_vopros-8'), Textures.findFirst('_vopros-9'),
+    Textures.findFirst('_vopros-10'), Textures.findFirst('_vopros-11'), Textures.findFirst('_vopros-12'), Textures.findFirst('_vopros-13'), Textures.findFirst('_vopros-14'), Textures.findFirst('_vopros-15'), Textures.findFirst('_vopros-16'), Textures.findFirst('_vopros-17'), Textures.findFirst('_vopros-18'), Textures.findFirst('_vopros-19'),
+    Textures.findFirst('_vopros-20'), Textures.findFirst('_vopros-21'), Textures.findFirst('_vopros-22'), Textures.findFirst('_vopros-23'), Textures.findFirst('_vopros-24'), Textures.findFirst('_vopros-25'), Textures.findFirst('_vopros-26'), Textures.findFirst('_vopros-27'), Textures.findFirst('_vopros-28'), Textures.findFirst('_vopros-29'),
+    Textures.findFirst('_vopros-30'), Textures.findFirst('_vopros-31'),
+  ])
+
+  let texArrayVopros = [
+    vopros_0, vopros_1, vopros_2, vopros_3, vopros_4, vopros_5, vopros_6, vopros_7, vopros_8, vopros_9,
+    vopros_10, vopros_11, vopros_12, vopros_13, vopros_14, vopros_15, vopros_16, vopros_17, vopros_18, vopros_19,
+    vopros_20, vopros_21, vopros_22, vopros_23, vopros_24, vopros_25, vopros_26, vopros_27, vopros_28, vopros_29,
+    vopros_30, vopros_31,
+  ] // 32 textures
+
+  const [
+    otvet_0, otvet_1, otvet_2, otvet_3, otvet_4, otvet_5, otvet_6, otvet_7, otvet_8, otvet_9,
+    otvet_10, otvet_11, otvet_12, otvet_13, otvet_14, otvet_15, otvet_16, otvet_17, otvet_18, otvet_19,
+    otvet_20, otvet_21, otvet_22, otvet_23, otvet_24, otvet_25, otvet_26, otvet_27, otvet_28, otvet_29,
+    otvet_30, otvet_31,
+  ] = await Promise.all([
+    Textures.findFirst('_otvet-0'), Textures.findFirst('_otvet-1'), Textures.findFirst('_otvet-2'), Textures.findFirst('_otvet-3'), Textures.findFirst('_otvet-4'), Textures.findFirst('_otvet-5'), Textures.findFirst('_otvet-6'), Textures.findFirst('_otvet-7'), Textures.findFirst('_otvet-8'), Textures.findFirst('_otvet-9'),
+    Textures.findFirst('_otvet-10'), Textures.findFirst('_otvet-11'), Textures.findFirst('_otvet-12'), Textures.findFirst('_otvet-13'), Textures.findFirst('_otvet-14'), Textures.findFirst('_otvet-15'), Textures.findFirst('_otvet-16'), Textures.findFirst('_otvet-17'), Textures.findFirst('_otvet-18'), Textures.findFirst('_otvet-19'),
+    Textures.findFirst('_otvet-20'), Textures.findFirst('_otvet-21'), Textures.findFirst('_otvet-22'), Textures.findFirst('_otvet-23'), Textures.findFirst('_otvet-24'), Textures.findFirst('_otvet-25'), Textures.findFirst('_otvet-26'), Textures.findFirst('_otvet-27'), Textures.findFirst('_otvet-28'), Textures.findFirst('_otvet-29'),
+    Textures.findFirst('_otvet-30'), Textures.findFirst('_otvet-31'),
+  ])
+
+  let texArrayOtvet = [
+    otvet_0, otvet_1, otvet_2, otvet_3, otvet_4, otvet_5, otvet_6, otvet_7, otvet_8, otvet_9,
+    otvet_10, otvet_11, otvet_12, otvet_13, otvet_14, otvet_15, otvet_16, otvet_17, otvet_18, otvet_19,
+    otvet_20, otvet_21, otvet_22, otvet_23, otvet_24, otvet_25, otvet_26, otvet_27, otvet_28, otvet_29,
+    otvet_30, otvet_31,
+  ] // 32 textures
+
+  const [
+    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+  ] = await Promise.all([
+    Textures.findFirst('_textureSecond_0'), Textures.findFirst('_textureSecond_1'), Textures.findFirst('_textureSecond_2'), Textures.findFirst('_textureSecond_3'),
+  ])
+
+  let texArray = [
+    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+  ] // 4 textures
+  // podlogka vopros otvet_left otvet_right galka
+
+  const [
+    podlogka, _podlogka,
+    vopros, _vopros,
+    otvet_left, _otvet_left,
+    otvet_right, _otvet_right,
+    galka, _galka,
+  ] = await Promise.all([
+    Scene.root.findFirst('podlogka'), Materials.findFirst('_podlogka'),
+    Scene.root.findFirst('vopros'), Materials.findFirst('_vopros'),
+    Scene.root.findFirst('otvet_left'), Materials.findFirst('_otvet_left'),
+    Scene.root.findFirst('otvet_right'), Materials.findFirst('_otvet_right'),
+    Scene.root.findFirst('galka'), Materials.findFirst('_galka'),
+  ]) // 5 obj and mat
+
+  let podlogkaObj = new Osc.OnScene(podlogka, _podlogka, texArray)
+  let voprosObj = new Osc.OnScene(vopros, _vopros, texArrayVopros)
+  let otvet_leftObj = new Osc.OnScene(otvet_left, _otvet_left, texArrayOtvet)
+  let otvet_rightObj = new Osc.OnScene(otvet_right, _otvet_right, texArrayOtvet)
+  let galkaObj = new Osc.OnScene(galka, _galka, texArray)
+
+  voprosObj.replaseMaterialObj(25)
+  //////////////////////////////////////////////////////////
   GameService.pointMax = 20
   GameService.healthMax = 5
-  // Diagnostics.log(GameService)
+
+  Diagnostics.log(GameService.isGame)
+  Diagnostics.log(GameService.point)
+
+  //////////////////////////////////////////////////////todo
 
   /////////////////////////////////////////////////////////
 
@@ -308,7 +380,7 @@ resultCore: ${this.resultCore}`
     AnimationInGame.endGameAnim(GameService.howEnd);
   }
 
-  
+
   //////////////////////////////////////////////////////////
 
 })();

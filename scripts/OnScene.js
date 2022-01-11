@@ -21,7 +21,7 @@ export { zero, OnScene };
 let zero = "Connect..."
 
 class OnScene {
-  constructor(obj, materialObj, texture) {
+  constructor(obj, materialObj, texture = []) {
     this.obj = obj;
     this.materialObj = materialObj;
     this.texture = texture
