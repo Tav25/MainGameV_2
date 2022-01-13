@@ -167,8 +167,8 @@ import * as MyGameService from './MyGameService';
   GameService.pointMax = 20
   GameService.healthMax = 5
 
-  Diagnostics.log(GameService.isGame)
-  Diagnostics.log(GameService.point)
+  // Diagnostics.log(GameService.isGame)
+  // Diagnostics.log(GameService.point)
 
   //////////////////////////////////////////////////////todo
 
@@ -372,16 +372,22 @@ resultCore: ${this.resultCore}`
     AnimationInGame.preparationAnim()
   }
 
-  function mainCycleFunction(res) {
-    if (res === undefined) {
+  function mainCycleFunction(vhodachieDannueMainCycle) {
+    if (vhodachieDannueMainCycle === undefined) {
       Diagnostics.log('FirstAnimation0')
     }
-    if (res === 'verno' || res === 'neVerno') {
+    if (vhodachieDannueMainCycle === 'verno' || vhodachieDannueMainCycle === 'neVerno') {
       mainArray.arr.shift()
+      Diagnostics.log('Ыршае')
     }
   }
 
-  function answerVerification(x) {
+  function answerVerification(vhodachieDannueVerifikacii) { // вхо 0,1,2
+    let resultAnswerVerification
+    if (vhodachieDannueVerifikacii === 0) { resultAnswerVerification = 0 }
+    if (vhodachieDannueVerifikacii === 1) { resultAnswerVerification = 1 }
+    if (vhodachieDannueVerifikacii === 2) { resultAnswerVerification = 2 }
+    return resultAnswerVerification //выход 0,1,2
 
   }
 
