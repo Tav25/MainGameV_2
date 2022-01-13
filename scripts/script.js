@@ -5,6 +5,7 @@ const Textures = require("Textures");
 const TouchGestures = require("TouchGestures");
 const Time = require("Time");
 const Patches = require("Patches");
+const Random = require("Random");
 
 
 
@@ -258,7 +259,7 @@ import * as MyGameService from './MyGameService';
   }
 
   ////////////////////////////////////////////////////////////////
-  const { mainArray } = podgotovkaGameCore();
+  let { mainArray, randNumber } = podgotovkaGameCore();
   ////////////////////////////////////////////////////////////////
 
   let GameCore = {
@@ -326,6 +327,7 @@ resultCore: ${this.resultCore}`
     },
 
     mainCycleAnim() {
+      voprosObj.replaseMaterialObj(mainArray.arr[0])
       Diagnostics.log('mainCycleAnim')
     },
     resultAnim(result) {
@@ -358,14 +360,15 @@ resultCore: ${this.resultCore}`
 
   function monitorSpec() {
     return `-----
-    ${mainArray.arr}
+    ${mainArray.arr} num ${randNumber}
     `
   }
 
   function podgotovkaGameCore() {
     const numberOfQuestions = 32;
     const mainArray = new Ma.MyArray(numberOfQuestions);
-    return { mainArray };
+    let randNumber
+    return { mainArray, randNumber };
   }
 
   function preparationFunction() {
@@ -377,12 +380,32 @@ resultCore: ${this.resultCore}`
   function mainCycleFunction(vhodachieDannueMainCycle) {
     if (vhodachieDannueMainCycle === undefined) {
       Diagnostics.log('FirstAnimation0')
+      createAnswear();
 
     }
     if (vhodachieDannueMainCycle === 'verno' || vhodachieDannueMainCycle === 'neVerno') {
       mainArray.arr.shift()
       Diagnostics.log('Ыршае')
-      AnimationInGame.preparationAnim()
+
+      createAnswear();
+
+      AnimationInGame.mainCycleAnim()
+    }
+
+    function createAnswear() {
+      randNumber = randomInt(2);
+      Diagnostics.log(randNumber);
+      if (randNumber === 0) {
+        otvet_leftObj.replaseMaterialObj((mainArray.arr[0]));
+        otvet_rightObj.replaseMaterialObj(randFalseAnswear());
+      } else {
+        otvet_leftObj.replaseMaterialObj(randFalseAnswear());
+        otvet_rightObj.replaseMaterialObj((mainArray.arr[0]));
+      }
+    }
+    
+    function randFalseAnswear() {
+      return 0;
     }
   }
 
