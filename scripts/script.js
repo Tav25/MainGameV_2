@@ -373,11 +373,11 @@ resultCore: ${this.resultCore}`
     mainArray.shuffle();
     AnimationInGame.preparationAnim()
   }
-  
+
   function mainCycleFunction(vhodachieDannueMainCycle) {
     if (vhodachieDannueMainCycle === undefined) {
       Diagnostics.log('FirstAnimation0')
-      
+
     }
     if (vhodachieDannueMainCycle === 'verno' || vhodachieDannueMainCycle === 'neVerno') {
       mainArray.arr.shift()
@@ -404,5 +404,7 @@ resultCore: ${this.resultCore}`
 
 })();
 
-
+function randomInt(max) {// рандомайзер
+  return Math.floor(Random.random() * Math.floor(max));
+}
 
