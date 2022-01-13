@@ -276,6 +276,7 @@ resultCore: ${this.resultCore}`
 
     preparation() {// подготовка к игре
       this.isReadyToAnswer = false
+      this.resultCore = undefined
       preparationFunction();
     },
 
