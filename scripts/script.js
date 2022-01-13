@@ -133,13 +133,13 @@ import * as MyGameService from './MyGameService';
   ] // 32 textures
 
   const [
-    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+    _textureSecond_1, _textureSecond_2, _textureSecond_3, _textureSecond_4,
   ] = await Promise.all([
-    Textures.findFirst('_textureSecond_0'), Textures.findFirst('_textureSecond_1'), Textures.findFirst('_textureSecond_2'), Textures.findFirst('_textureSecond_3'),
+    Textures.findFirst('_textureSecond_1'), Textures.findFirst('_textureSecond_2'), Textures.findFirst('_textureSecond_3'), Textures.findFirst('_textureSecond_4'),
   ])
 
   let texArray = [
-    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+    _textureSecond_1, _textureSecond_2, _textureSecond_3, _textureSecond_4,
   ] // 4 textures
   // podlogka vopros otvet_left otvet_right galka
 
@@ -259,7 +259,7 @@ import * as MyGameService from './MyGameService';
   }
 
   ////////////////////////////////////////////////////////////////
-  let { mainArray, randNumber } = podgotovkaGameCore();
+  let { mainArray, randNumber, numberOfQuestions } = podgotovkaGameCore();
   ////////////////////////////////////////////////////////////////
 
   let GameCore = {
@@ -337,6 +337,12 @@ resultCore: ${this.resultCore}`
       Diagnostics.log('endGameAnim ' + result)
     },
 
+    galka() {
+      galkaObj.show();
+      // sleep 
+      // galkaObj.hide()
+    }
+
   }
 
   //////////////////////////////////////////////////////////CODE
@@ -369,7 +375,7 @@ resultCore: ${this.resultCore}`
     const numberOfQuestions = 32;
     const mainArray = new Ma.MyArray(numberOfQuestions);
     let randNumber
-    return { mainArray, randNumber };
+    return { mainArray, randNumber, numberOfQuestions };
   }
 
   function preparationFunction() {
@@ -385,12 +391,32 @@ resultCore: ${this.resultCore}`
 
     }
     if (vhodachieDannueMainCycle === 'verno' || vhodachieDannueMainCycle === 'neVerno') {
+      galkaShow();
+
+
       mainArray.arr.shift()
-      Diagnostics.log('Ыршае')
-
       createAnswear();
-
       AnimationInGame.mainCycleAnim()
+    }
+
+    function galkaShow() {
+      if (vhodachieDannueMainCycle === 'verno') {
+        galkaObj.replaseMaterialObj(0);
+        pologebiePoX();
+      } else {
+        galkaObj.replaseMaterialObj(1);
+        pologebiePoX();
+      }
+      AnimationInGame.galka()
+
+      function pologebiePoX() {
+        if (GameCore.resultCore === 'verno') {
+          galkaObj.positionX(0.015);
+        } else {
+          galkaObj.positionX(-0.015);
+        }
+      }
+
     }
 
     function createAnswear() {
@@ -413,9 +439,9 @@ resultCore: ${this.resultCore}`
     function randFalseAnswear() {
       let numRAND
       do {
-        numRAND = randomInt(33)
-        Diagnostics.log('RAND: ' + numRAND)
+        numRAND = randomInt(numberOfQuestions)
       } while (mainArray.arr[0] === numRAND);
+      // return 33
       return numRAND;
     }
   }
