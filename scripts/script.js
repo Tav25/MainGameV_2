@@ -258,7 +258,7 @@ import * as MyGameService from './MyGameService';
   }
 
   ////////////////////////////////////////////////////////////////
-  const { mainArray } = podgotovkaGameCore();
+  const {  } = podgotovkaGameCore();
   ////////////////////////////////////////////////////////////////
 
   let GameCore = {
@@ -322,7 +322,6 @@ resultCore: ${this.resultCore}`
 
     preparationAnim() {
       Diagnostics.log('prepAnimation')
-      voprosObj.replaseMaterialObj(mainArray.arr[0])
     },
 
     mainCycleAnim() {
@@ -358,31 +357,23 @@ resultCore: ${this.resultCore}`
 
   function monitorSpec() {
     return `-----
-    ${mainArray.arr}
     `
   }
 
   function podgotovkaGameCore() {
-    const numberOfQuestions = 32;
-    const mainArray = new Ma.MyArray(numberOfQuestions);
-    return { mainArray };
+    return {  };
   }
 
   function preparationFunction() {
-    mainArray.mArray();
-    mainArray.shuffle();
     AnimationInGame.preparationAnim()
   }
   
   function mainCycleFunction(vhodachieDannueMainCycle) {
     if (vhodachieDannueMainCycle === undefined) {
-      Diagnostics.log('FirstAnimation0')
       
     }
     if (vhodachieDannueMainCycle === 'verno' || vhodachieDannueMainCycle === 'neVerno') {
-      mainArray.arr.shift()
-      Diagnostics.log('Ыршае')
-      AnimationInGame.preparationAnim()
+
     }
   }
 
