@@ -194,6 +194,11 @@ import * as MyGameService from './MyGameService';
 
   //////////////////////////////////////////////////////////
   let GameAction = {
+
+    abruptStop() {
+      GameService.endGame('win');
+    },
+
     checkEndGame() {
       updatePointsHelth(numZero2, GameService, numZero);
       if (GameService.isGame === false) {
@@ -385,6 +390,11 @@ resultCore: ${this.resultCore}`
   }
 
   function mainCycleFunction(vhodachieDannueMainCycle) {
+    if (false) { 
+      GameAction.abruptStop() 
+      return
+    }
+    
     if (vhodachieDannueMainCycle === undefined) {
       Diagnostics.log('FirstAnimation0')
       createAnswear();
@@ -392,7 +402,6 @@ resultCore: ${this.resultCore}`
     }
     if (vhodachieDannueMainCycle === 'verno' || vhodachieDannueMainCycle === 'neVerno') {
       galkaShow();
-
 
       mainArray.arr.shift()
       createAnswear();
