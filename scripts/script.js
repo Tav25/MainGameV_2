@@ -90,88 +90,87 @@ import * as MyGameService from './MyGameService';
   let startButton = new Osc.OnScene(start_tap)
 
 
-  //cardAnim
+  let GameService = MyGameService.GameService;
+
+  //////////////////////////////////////////////////////todo:
   const [
-    mainCard, matMainCard,
-
-    topCard0, mattopCard0,
-    topCard1, mattopCard1,
-    topCard2, mattopCard2,
-    topCard3, mattopCard3,
-    topCard4, mattopCard4,
-
-    texture0, texture1, texture2, texture3, texture4,
-    texture5, texture6, texture7, texture8, texture9,
-    texture10, texture11, texture12, texture13, texture14,
-    texture15, texture16, texture17, texture18, texture19,
-    // texture20, texture21, texture22, texture23, texture24,
-    // texture25, texture26, texture27, texture28, texture29,
-
-    textureSecond0, textureSecond1, textureSecond2, textureSecond3, textureSecond4,
-    textureSecond5, textureSecond6, textureSecond7, textureSecond8, textureSecond9,
-    textureSecond10, textureSecond11, textureSecond12, textureSecond13, textureSecond14,
-    textureSecond15, textureSecond16, textureSecond17, textureSecond18, textureSecond19,
-    // textureSecond20, textureSecond21, textureSecond22, textureSecond23, textureSecond24,
-    // textureSecond25, textureSecond26, textureSecond27, textureSecond28, textureSecond29,
-    rubashka
-
+    vopros_0, vopros_1, vopros_2, vopros_3, vopros_4, vopros_5, vopros_6, vopros_7, vopros_8, vopros_9,
+    vopros_10, vopros_11, vopros_12, vopros_13, vopros_14, vopros_15, vopros_16, vopros_17, vopros_18, vopros_19,
+    vopros_20, vopros_21, vopros_22, vopros_23, vopros_24, vopros_25, vopros_26, vopros_27, vopros_28, vopros_29,
+    vopros_30, vopros_31,
   ] = await Promise.all([
-    Scene.root.findFirst('mainCard'), Materials.findFirst('matMainCard'),
-
-    Scene.root.findFirst('topCard0'), Materials.findFirst('mattopCard0'),
-    Scene.root.findFirst('topCard1'), Materials.findFirst('mattopCard1'),
-    Scene.root.findFirst('topCard2'), Materials.findFirst('mattopCard2'),
-    Scene.root.findFirst('topCard3'), Materials.findFirst('mattopCard3'),
-    Scene.root.findFirst('topCard4'), Materials.findFirst('mattopCard4'),
-
-    Textures.findFirst('card – 0'), Textures.findFirst('card – 1'), Textures.findFirst('card – 2'), Textures.findFirst('card – 3'), Textures.findFirst('card – 4'),
-    Textures.findFirst('card – 5'), Textures.findFirst('card – 6'), Textures.findFirst('card – 7'), Textures.findFirst('card – 8'), Textures.findFirst('card – 9'),
-    Textures.findFirst('card – 10'), Textures.findFirst('card – 11'), Textures.findFirst('card – 12'), Textures.findFirst('card – 13'), Textures.findFirst('card – 14'),
-    Textures.findFirst('card – 15'), Textures.findFirst('card – 16'), Textures.findFirst('card – 17'), Textures.findFirst('card – 18'), Textures.findFirst('card – 19'),
-    // Textures.findFirst('card – 20'), Textures.findFirst('card – 21'), Textures.findFirst('card – 22'), Textures.findFirst('card – 23'), Textures.findFirst('card – 24'),
-    // Textures.findFirst('card – 25'), Textures.findFirst('card – 26'), Textures.findFirst('card – 27'), Textures.findFirst('card – 28'), Textures.findFirst('card – 29'),
-
-    Textures.findFirst('cardSecond – 0'), Textures.findFirst('cardSecond – 1'), Textures.findFirst('cardSecond – 2'), Textures.findFirst('cardSecond – 3'), Textures.findFirst('cardSecond – 4'),
-    Textures.findFirst('cardSecond – 5'), Textures.findFirst('cardSecond – 6'), Textures.findFirst('cardSecond – 7'), Textures.findFirst('cardSecond – 8'), Textures.findFirst('cardSecond – 9'),
-    Textures.findFirst('cardSecond – 10'), Textures.findFirst('cardSecond – 11'), Textures.findFirst('cardSecond – 12'), Textures.findFirst('cardSecond – 13'), Textures.findFirst('cardSecond – 14'),
-    Textures.findFirst('cardSecond – 15'), Textures.findFirst('cardSecond – 16'), Textures.findFirst('cardSecond – 17'), Textures.findFirst('cardSecond – 18'), Textures.findFirst('cardSecond – 19'),
-    // Textures.findFirst('cardSecond – 20'), Textures.findFirst('cardSecond – 21'), Textures.findFirst('cardSecond – 22'), Textures.findFirst('cardSecond – 23'), Textures.findFirst('cardSecond – 24'),
-    // Textures.findFirst('cardSecond – 25'), Textures.findFirst('cardSecond – 26'), Textures.findFirst('cardSecond – 27'), Textures.findFirst('cardSecond – 28'), Textures.findFirst('cardSecond – 29'),
-    Textures.findFirst('rubashka')
+    Textures.findFirst('_vopros-0'), Textures.findFirst('_vopros-1'), Textures.findFirst('_vopros-2'), Textures.findFirst('_vopros-3'), Textures.findFirst('_vopros-4'), Textures.findFirst('_vopros-5'), Textures.findFirst('_vopros-6'), Textures.findFirst('_vopros-7'), Textures.findFirst('_vopros-8'), Textures.findFirst('_vopros-9'),
+    Textures.findFirst('_vopros-10'), Textures.findFirst('_vopros-11'), Textures.findFirst('_vopros-12'), Textures.findFirst('_vopros-13'), Textures.findFirst('_vopros-14'), Textures.findFirst('_vopros-15'), Textures.findFirst('_vopros-16'), Textures.findFirst('_vopros-17'), Textures.findFirst('_vopros-18'), Textures.findFirst('_vopros-19'),
+    Textures.findFirst('_vopros-20'), Textures.findFirst('_vopros-21'), Textures.findFirst('_vopros-22'), Textures.findFirst('_vopros-23'), Textures.findFirst('_vopros-24'), Textures.findFirst('_vopros-25'), Textures.findFirst('_vopros-26'), Textures.findFirst('_vopros-27'), Textures.findFirst('_vopros-28'), Textures.findFirst('_vopros-29'),
+    Textures.findFirst('_vopros-30'), Textures.findFirst('_vopros-31'),
   ])
 
+  let texArrayVopros = [
+    vopros_0, vopros_1, vopros_2, vopros_3, vopros_4, vopros_5, vopros_6, vopros_7, vopros_8, vopros_9,
+    vopros_10, vopros_11, vopros_12, vopros_13, vopros_14, vopros_15, vopros_16, vopros_17, vopros_18, vopros_19,
+    vopros_20, vopros_21, vopros_22, vopros_23, vopros_24, vopros_25, vopros_26, vopros_27, vopros_28, vopros_29,
+    vopros_30, vopros_31,
+  ] // 32 textures
 
-  let textureArray = [texture0, texture1, texture2, texture3, texture4,
-    texture5, texture6, texture7, texture8, texture9,
-    texture10, texture11, texture12, texture13, texture14,
-    texture15, texture16, texture17, texture18, texture19,
-    // texture20, texture21, texture22, texture23, texture24,
-    // texture25, texture26, texture27, texture28, texture29,
-    rubashka]
+  const [
+    otvet_0, otvet_1, otvet_2, otvet_3, otvet_4, otvet_5, otvet_6, otvet_7, otvet_8, otvet_9,
+    otvet_10, otvet_11, otvet_12, otvet_13, otvet_14, otvet_15, otvet_16, otvet_17, otvet_18, otvet_19,
+    otvet_20, otvet_21, otvet_22, otvet_23, otvet_24, otvet_25, otvet_26, otvet_27, otvet_28, otvet_29,
+    otvet_30, otvet_31,
+  ] = await Promise.all([
+    Textures.findFirst('_otvet-0'), Textures.findFirst('_otvet-1'), Textures.findFirst('_otvet-2'), Textures.findFirst('_otvet-3'), Textures.findFirst('_otvet-4'), Textures.findFirst('_otvet-5'), Textures.findFirst('_otvet-6'), Textures.findFirst('_otvet-7'), Textures.findFirst('_otvet-8'), Textures.findFirst('_otvet-9'),
+    Textures.findFirst('_otvet-10'), Textures.findFirst('_otvet-11'), Textures.findFirst('_otvet-12'), Textures.findFirst('_otvet-13'), Textures.findFirst('_otvet-14'), Textures.findFirst('_otvet-15'), Textures.findFirst('_otvet-16'), Textures.findFirst('_otvet-17'), Textures.findFirst('_otvet-18'), Textures.findFirst('_otvet-19'),
+    Textures.findFirst('_otvet-20'), Textures.findFirst('_otvet-21'), Textures.findFirst('_otvet-22'), Textures.findFirst('_otvet-23'), Textures.findFirst('_otvet-24'), Textures.findFirst('_otvet-25'), Textures.findFirst('_otvet-26'), Textures.findFirst('_otvet-27'), Textures.findFirst('_otvet-28'), Textures.findFirst('_otvet-29'),
+    Textures.findFirst('_otvet-30'), Textures.findFirst('_otvet-31'),
+  ])
 
-  let textureArrayScecond = [textureSecond0, textureSecond1, textureSecond2, textureSecond3, textureSecond4,
-    textureSecond5, textureSecond6, textureSecond7, textureSecond8, textureSecond9,
-    textureSecond10, textureSecond11, textureSecond12, textureSecond13, textureSecond14,
-    textureSecond15, textureSecond16, textureSecond17, textureSecond18, textureSecond19,
-    // textureSecond20, textureSecond21, textureSecond22, textureSecond23, textureSecond24,
-    // textureSecond25, textureSecond26, textureSecond27, textureSecond28, textureSecond29,
-    rubashka]
+  let texArrayOtvet = [
+    otvet_0, otvet_1, otvet_2, otvet_3, otvet_4, otvet_5, otvet_6, otvet_7, otvet_8, otvet_9,
+    otvet_10, otvet_11, otvet_12, otvet_13, otvet_14, otvet_15, otvet_16, otvet_17, otvet_18, otvet_19,
+    otvet_20, otvet_21, otvet_22, otvet_23, otvet_24, otvet_25, otvet_26, otvet_27, otvet_28, otvet_29,
+    otvet_30, otvet_31,
+  ] // 32 textures
 
+  const [
+    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+  ] = await Promise.all([
+    Textures.findFirst('_textureSecond_0'), Textures.findFirst('_textureSecond_1'), Textures.findFirst('_textureSecond_2'), Textures.findFirst('_textureSecond_3'),
+  ])
 
-  let mainCardCl = new Osc.OnScene(mainCard, matMainCard, textureArray)
+  let texArray = [
+    _textureSecond_0, _textureSecond_1, _textureSecond_2, _textureSecond_3,
+  ] // 4 textures
+  // podlogka vopros otvet_left otvet_right galka
 
-  let topCardNumber0 = new Osc.OnScene(topCard0, mattopCard0, textureArrayScecond)
-  let topCardNumber1 = new Osc.OnScene(topCard1, mattopCard1, textureArrayScecond)
-  let topCardNumber2 = new Osc.OnScene(topCard2, mattopCard2, textureArrayScecond)
-  let topCardNumber3 = new Osc.OnScene(topCard3, mattopCard3, textureArrayScecond)
-  let topCardNumber4 = new Osc.OnScene(topCard4, mattopCard4, textureArrayScecond)
+  const [
+    podlogka, _podlogka,
+    vopros, _vopros,
+    otvet_left, _otvet_left,
+    otvet_right, _otvet_right,
+    galka, _galka,
+  ] = await Promise.all([
+    Scene.root.findFirst('podlogka'), Materials.findFirst('_podlogka'),
+    Scene.root.findFirst('vopros'), Materials.findFirst('_vopros'),
+    Scene.root.findFirst('otvet_left'), Materials.findFirst('_otvet_left'),
+    Scene.root.findFirst('otvet_right'), Materials.findFirst('_otvet_right'),
+    Scene.root.findFirst('galka'), Materials.findFirst('_galka'),
+  ]) // 5 obj and mat
 
-  //
+  let podlogkaObj = new Osc.OnScene(podlogka, _podlogka, texArray)
+  let voprosObj = new Osc.OnScene(vopros, _vopros, texArrayVopros)
+  let otvet_leftObj = new Osc.OnScene(otvet_left, _otvet_left, texArrayOtvet)
+  let otvet_rightObj = new Osc.OnScene(otvet_right, _otvet_right, texArrayOtvet)
+  let galkaObj = new Osc.OnScene(galka, _galka, texArray)
+
+  voprosObj.replaseMaterialObj(25)
   //////////////////////////////////////////////////////////
-  let GameService = MyGameService.GameService;
   GameService.pointMax = 20
   GameService.healthMax = 5
-  // Diagnostics.log(GameService)
+
+  // Diagnostics.log(GameService.isGame)
+  // Diagnostics.log(GameService.point)
+
+  //////////////////////////////////////////////////////todo
 
   /////////////////////////////////////////////////////////
 
@@ -259,7 +258,8 @@ import * as MyGameService from './MyGameService';
   }
 
   ////////////////////////////////////////////////////////////////
-  const { mainArray, secondArray } = podgotovkaGameCore();
+  const { mainArray } = podgotovkaGameCore();
+  ////////////////////////////////////////////////////////////////
 
   let GameCore = {
     answer: ['verno', 'neVerno', 'next'],
@@ -276,6 +276,7 @@ resultCore: ${this.resultCore}`
 
     preparation() {// подготовка к игре
       this.isReadyToAnswer = false
+      this.resultCore = undefined
       preparationFunction();
     },
 
@@ -314,7 +315,6 @@ resultCore: ${this.resultCore}`
   //! добавить анимацию если шаг игры равен 0, те самая первая анимация цикла
   let AnimationInGame = {
 
-    rub: 20,
 
     test() {
       Diagnostics.log('testAnim')
@@ -322,26 +322,10 @@ resultCore: ${this.resultCore}`
 
     preparationAnim() {
       Diagnostics.log('prepAnimation')
-
-      topCardNumber0.replaseMaterialObj(this.rub)
-      topCardNumber1.replaseMaterialObj(this.rub)
-      topCardNumber2.replaseMaterialObj(this.rub)
-      topCardNumber3.replaseMaterialObj(this.rub)
-      topCardNumber4.replaseMaterialObj(this.rub)
-      mainCardCl.replaseMaterialObj(this.rub)
-
-      topCardNumber0.opacity([0, 1], 900)
-      topCardNumber1.opacity([0, 1], 900)
-      topCardNumber2.opacity([0, 1], 900)
-      topCardNumber3.opacity([0, 1], 900)
-      topCardNumber4.opacity([0, 1], 900)
-      mainCardCl.opacity([0, 1], 900)
-
+      voprosObj.replaseMaterialObj(mainArray.arr[0])
     },
 
     mainCycleAnim() {
-      topCardNumber2.replaseMaterialObj(secondArray.arr[0])
-      mainCardCl.replaseMaterialObj(mainArray.arrMod[0])
       Diagnostics.log('mainCycleAnim')
     },
     resultAnim(result) {
@@ -360,7 +344,7 @@ resultCore: ${this.resultCore}`
     numZero2.numberPoint(GameService.health);
     numZero.numberPoint(GameService.point);
   }
-  
+
   function stopIntervalTimer(rc) {// остановка таймера
     Time.clearInterval(rc);
   }
@@ -368,58 +352,46 @@ resultCore: ${this.resultCore}`
   let counter = 0
   const ng4 = Time.setInterval(() => {
     counter++
-    vuvodInformacii(GameService.monitor + GameCore.monitor + process())
+    vuvodInformacii(GameService.monitor + GameCore.monitor + monitorSpec())
   }, 250)///////////////////////////////////////////////////////////////////
 
 
-  function process() {
-    return `
-    -----
-    ${secondArray.arr} 
-    ${mainArray.arrMod} >> lenght ${mainArray.arrMod.length}
-    | ${secondArray.arr[0]} | ${mainArray.arrMod[0]} | ${mainArray.arrMod[0] === secondArray.arr[0]}
-    
+  function monitorSpec() {
+    return `-----
+    ${mainArray.arr}
     `
   }
 
   function podgotovkaGameCore() {
-    const numberOfQuestions = 20;
-    const numberCardOnBoard = 5;
+    const numberOfQuestions = 32;
     const mainArray = new Ma.MyArray(numberOfQuestions);
-    const secondArray = new Ma.MyArray(numberCardOnBoard);
-    return { mainArray, secondArray };
+    return { mainArray };
   }
 
   function preparationFunction() {
-    AnimationInGame.preparationAnim();
+    mainArray.mArray();
     mainArray.shuffle();
-    mainArray.mArray2(8);
+    AnimationInGame.preparationAnim()
   }
-
-  function mainCycleFunction(res) {
-    if (res === undefined) {
+  
+  function mainCycleFunction(vhodachieDannueMainCycle) {
+    if (vhodachieDannueMainCycle === undefined) {
       Diagnostics.log('FirstAnimation0')
+      
     }
-    if (res === 'verno' || res === 'neVerno') {
-      mainArray.arrMod.shift()
-      secondArrayProcess()
+    if (vhodachieDannueMainCycle === 'verno' || vhodachieDannueMainCycle === 'neVerno') {
+      mainArray.arr.shift()
+      Diagnostics.log('Ыршае')
+      AnimationInGame.preparationAnim()
     }
-    if (secondArray.arr.length === 5 || GameService.step === 0) {
-      Diagnostics.log('FirstAnimation1')
-      secondArrayProcess();
-    }
-    AnimationInGame.mainCycleAnim();
   }
 
-  function answerVerification(x) {
+  function answerVerification(vhodachieDannueVerifikacii) { // вхо 0,1,2
     let resultAnswerVerification
-    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 1) { resultAnswerVerification = 1; }
-    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 1) { resultAnswerVerification = 0; }
-    if (mainArray.arrMod[0] === secondArray.arr[0] & x === 0) { resultAnswerVerification = 0; }
-    if (mainArray.arrMod[0] !== secondArray.arr[0] & x === 0) { resultAnswerVerification = 2; }
-    if (x === 2) (resultAnswerVerification = 2)
-    secondArray.delFirst()
-    return resultAnswerVerification
+    if (vhodachieDannueVerifikacii === 0) { resultAnswerVerification = 0 }
+    if (vhodachieDannueVerifikacii === 1) { resultAnswerVerification = 1 }
+    if (vhodachieDannueVerifikacii === 2) { resultAnswerVerification = 2 }
+    return resultAnswerVerification //выход 0,1,2
 
   }
 
@@ -427,11 +399,7 @@ resultCore: ${this.resultCore}`
     AnimationInGame.endGameAnim(GameService.howEnd);
   }
 
-  function secondArrayProcess() {//подготовка доп массива
-    secondArray.mArray()
-    secondArray.shuffle()
-    secondArray.repl(mainArray.arrMod, 0)
-  }
+
   //////////////////////////////////////////////////////////
 
 })();
