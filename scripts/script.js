@@ -360,7 +360,8 @@ resultCore: ${this.resultCore}`
 
   function monitorSpec() {
     return `-----
-    ${mainArray.arr} num ${randNumber}
+    ${mainArray.arr} 
+    num ${randNumber}
     `
   }
 
@@ -393,27 +394,40 @@ resultCore: ${this.resultCore}`
     }
 
     function createAnswear() {
-      randNumber = randomInt(2);
+      randNumber = randNumFunc();
       Diagnostics.log(randNumber);
       if (randNumber === 0) {
-        otvet_leftObj.replaseMaterialObj((mainArray.arr[0]));
-        otvet_rightObj.replaseMaterialObj(randFalseAnswear());
-      } else {
         otvet_leftObj.replaseMaterialObj(randFalseAnswear());
         otvet_rightObj.replaseMaterialObj((mainArray.arr[0]));
+      } else {
+        otvet_leftObj.replaseMaterialObj((mainArray.arr[0]));
+        otvet_rightObj.replaseMaterialObj(randFalseAnswear());
       }
     }
-    
+
+    function randNumFunc() {
+      // return 0;
+      return randomInt(2);
+    }
+
     function randFalseAnswear() {
-      return 0;
+      let numRAND
+      do {
+        numRAND = randomInt(33)
+        Diagnostics.log('RAND: ' + numRAND)
+      } while (mainArray.arr[0] === numRAND);
+      return numRAND;
     }
   }
 
   function answerVerification(vhodachieDannueVerifikacii) { // вхо 0,1,2
     let resultAnswerVerification
-    if (vhodachieDannueVerifikacii === 0) { resultAnswerVerification = 0 }
-    if (vhodachieDannueVerifikacii === 1) { resultAnswerVerification = 1 }
-    if (vhodachieDannueVerifikacii === 2) { resultAnswerVerification = 2 }
+    if (vhodachieDannueVerifikacii === 0 & randNumber === 0) { resultAnswerVerification = 1 }
+    if (vhodachieDannueVerifikacii === 1 & randNumber === 1) { resultAnswerVerification = 1 }
+    if (vhodachieDannueVerifikacii === 1 & randNumber === 0) { resultAnswerVerification = 0 }
+    if (vhodachieDannueVerifikacii === 0 & randNumber === 1) { resultAnswerVerification = 0 }
+    // if (vhodachieDannueVerifikacii === 1) { resultAnswerVerification = 1 }
+    // if (vhodachieDannueVerifikacii === 2) { resultAnswerVerification = 2 }
     return resultAnswerVerification //выход 0,1,2
 
   }
