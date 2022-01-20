@@ -18,7 +18,7 @@ import * as MyGameService from "./MyGameService";
   // Enables async/await in JS [part 1]
 
   const timeFrom = await Patches.outputs.getScalar("timeFromPath"); // время с запуска игры
-  const timeNow = timeFrom.pinLastValue();
+  // const timeNow = timeFrom.pinLastValue();
 
   /// вывод тестовой информации
   const [text2D] = await Promise.all([Scene.root.findFirst("2dText0")]); //2д текст на сцене
@@ -679,10 +679,12 @@ resultCore: ${this.resultCore}`;
       Diagnostics.log("endGameAnim " + result);
     },
 
-    galka() {
+    galka(vhod) {
       galkaObj.show();
-      // sleep
-      // galkaObj.hide()
+      const ng4 = Time.setInterval(() => {
+        galkaObj.hide();
+        stopIntervalTimer(ng4);
+      }, 2500);
     },
   };
 
@@ -726,26 +728,51 @@ resultCore: ${this.resultCore}`;
   }
 
   function mainCycleFunction(vhodachieDannueMainCycle) {
-    
+    ///////////
+    const timeDelay = [2, 3, 5];
+    let tm = [true, true, true, true, true, true, true, true, true];
+    const timeNow = timeFrom.pinLastValue();
+    const bn = timeFrom.monitor().subscribe(function (event) {
+      if (testTime(0)) {
+        tm[0] = false;
+        Diagnostics.log("T1");
+        AnimationInGame.shuffleAnim();
+      }
+      if (testTime(1)) {
+        tm[1] = false;
+        Diagnostics.log("T2");
+        mainBrain();
+        // bn.unsubscribe();
+        bn.unsubscribe();
+      }
+      
+    });
+
     if (false) {
       GameAction.abruptStop();
       return;
     }
 
-    if (vhodachieDannueMainCycle === undefined) {
-      Diagnostics.log("FirstAnimation0");
-      createAnswear();
+    function mainBrain() {
+      if (vhodachieDannueMainCycle === undefined) {
+        Diagnostics.log("FirstAnimation0");
+        createAnswear();
+      }
+      if (
+        vhodachieDannueMainCycle === "verno" ||
+        vhodachieDannueMainCycle === "neVerno"
+      ) {
+        galkaShow();
+        mainArray.arr.shift();
+        createAnswear();
+        // AnimationInGame.mainCycleAnim();
+      }
     }
-    if (
-      vhodachieDannueMainCycle === "verno" ||
-      vhodachieDannueMainCycle === "neVerno"
-    ) {
-      galkaShow();
 
-      mainArray.arr.shift();
-      createAnswear();
-      AnimationInGame.mainCycleAnim();
+    function testTime(xcvb) {
+      return timeFrom.pinLastValue() > timeNow + timeDelay[xcvb] && tm[xcvb];
     }
+    ///////////
 
     function galkaShow() {
       if (vhodachieDannueMainCycle === "verno") {
@@ -755,7 +782,7 @@ resultCore: ${this.resultCore}`;
         galkaObj.replaseMaterialObj(1);
         pologebiePoX();
       }
-      AnimationInGame.galka();
+      AnimationInGame.galka(true);
 
       function pologebiePoX() {
         if (GameCore.resultCore === "verno") {
@@ -776,6 +803,7 @@ resultCore: ${this.resultCore}`;
         otvet_leftObj.replaseMaterialObj(mainArray.arr[0]);
         otvet_rightObj.replaseMaterialObj(randFalseAnswear());
       }
+      AnimationInGame.mainCycleAnim();
     }
 
     function randNumFunc() {
@@ -792,6 +820,7 @@ resultCore: ${this.resultCore}`;
       return numRAND;
     }
   }
+  //!main Cykle
 
   function answerVerification(vhodachieDannueVerifikacii) {
     // вхо 0,1,2
