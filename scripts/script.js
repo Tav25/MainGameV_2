@@ -513,14 +513,26 @@ import * as MyGameService from "./MyGameService";
 
   TouchGestures.onTap(testYes).subscribe((gesture) => {
     GameAction.coreAnswer(GameCore.resultCheck(1));
+    GameAction.heroActionSet("a");
   });
 
   TouchGestures.onTap(testNo).subscribe((gesture) => {
     GameAction.coreAnswer(GameCore.resultCheck(0));
+    GameAction.heroActionSet("b");
   });
 
   //////////////////////////////////////////////////////////
+
   let GameAction = {
+    heroAction: undefined,
+
+    heroActionSet(intr) {
+      let herActionValue = ["a", "b", "c"];
+      if (herActionValue.includes(intr)) {
+        this.heroAction = intr;
+      }
+    },
+
     abruptStop() {
       GameService.endGame("win");
     },
@@ -654,7 +666,7 @@ resultCore: ${this.resultCore}`;
     },
 
     preparationAnim() {
-      Diagnostics.log("prepAnimation");
+      Diagnostics.log("prepAnimationZ");
       voprosObj.replaseMaterialObj(32);
       otvet_leftObj.replaseMaterialObj(32);
       otvet_rightObj.replaseMaterialObj(32);
@@ -662,7 +674,7 @@ resultCore: ${this.resultCore}`;
     },
 
     shuffleAnim() {
-      Diagnostics.log("prepAnimation");
+      Diagnostics.log("shuffleAnim");
       voprosObj.replaseMaterialObj(33);
       otvet_leftObj.replaseMaterialObj(33);
       otvet_rightObj.replaseMaterialObj(34);
@@ -729,28 +741,35 @@ resultCore: ${this.resultCore}`;
 
   function mainCycleFunction(vhodachieDannueMainCycle) {
     ///////////
-    const timeDelay = [2, 3, 5];
+    const timeDelay = [0, 3, 5];
     let tm = [true, true, true, true, true, true, true, true, true];
     const timeNow = timeFrom.pinLastValue();
     const bn = timeFrom.monitor().subscribe(function (event) {
       if (testTime(0)) {
         tm[0] = false;
         Diagnostics.log("T1");
-        AnimationInGame.shuffleAnim();
+        galkaShow();
       }
       if (testTime(1)) {
         tm[1] = false;
+        shuffle();
         Diagnostics.log("T2");
+      }
+      if (testTime(2)) {
+        tm[2] = false;
         mainBrain();
-        // bn.unsubscribe();
+        Diagnostics.log("T3");
         bn.unsubscribe();
       }
-      
     });
 
-    if (false) {
-      GameAction.abruptStop();
-      return;
+    function rashetu() {
+      mainArray.arr.shift();
+      createAnswear();
+    }
+
+    function shuffle() {
+      AnimationInGame.shuffleAnim();
     }
 
     function mainBrain() {
@@ -762,10 +781,8 @@ resultCore: ${this.resultCore}`;
         vhodachieDannueMainCycle === "verno" ||
         vhodachieDannueMainCycle === "neVerno"
       ) {
-        galkaShow();
         mainArray.arr.shift();
         createAnswear();
-        // AnimationInGame.mainCycleAnim();
       }
     }
 
@@ -775,20 +792,24 @@ resultCore: ${this.resultCore}`;
     ///////////
 
     function galkaShow() {
-      if (vhodachieDannueMainCycle === "verno") {
-        galkaObj.replaseMaterialObj(0);
-        pologebiePoX();
-      } else {
-        galkaObj.replaseMaterialObj(1);
-        pologebiePoX();
+      pologebiePoX();
+      if (
+        vhodachieDannueMainCycle === "verno" ||
+        vhodachieDannueMainCycle === "neVerno"
+      ) {
+        if (vhodachieDannueMainCycle === "verno") {
+          galkaObj.replaseMaterialObj(0);
+        } else {
+          galkaObj.replaseMaterialObj(1);
+        }
+        AnimationInGame.galka(true);
       }
-      AnimationInGame.galka(true);
 
       function pologebiePoX() {
-        if (GameCore.resultCore === "verno") {
-          galkaObj.positionX(0.015);
-        } else {
+        if (GameAction.heroAction === "a") {
           galkaObj.positionX(-0.015);
+        } else {
+          galkaObj.positionX(0.015);
         }
       }
     }
