@@ -68,9 +68,13 @@ const Patches = require("Patches");
     },
   };
 
+  const timeFrom = await Patches.outputs.getScalar("timeFromPath"); // время с запуска игры
+  const timeNow = timeFrom.pinLastValue();
+
   log.show();
   testBUtton.connect();
   testBUtton.resize();
 
+  Diagnostics.log(timeNow);
   Diagnostics.log("fin");
 })();
