@@ -6,6 +6,12 @@ const TouchGestures = require("TouchGestures");
 const Time = require("Time");
 const Patches = require("Patches");
 
+// import * as Osc from './OnScene'; //класс объектов на сцена
+// import * as Ma from './MyArray'; // работа с массивом
+// import * as MText from './MyText'; // работа с текстом
+// import * as MP from './MyPoint';
+// import * as MyGameService from './MyGameService';
+
 (async function () {
   //!LOG
   const [logText] = await Promise.all([Scene.root.findFirst("logText")]);
