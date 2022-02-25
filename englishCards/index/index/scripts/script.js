@@ -78,7 +78,7 @@ import * as Osc from "./OnScene"; //класс объектов на сцена
   const timeNow = timeFrom.pinLastValue();
   //!
 
-  //////////////////////////////////!
+  //////////////////////////////////! top cards
   const [
     topCardTexture_0,
     topCardTexture_1,
@@ -142,15 +142,66 @@ import * as Osc from "./OnScene"; //класс объектов на сцена
 
   // let texArray = [];
 
-  let topCard0Obj = new Osc.OnScene(topCard0, _topCard0, texArray);
-  let topCard1Obj = new Osc.OnScene(topCard1, _topCard1, texArray);
-  let topCard2Obj = new Osc.OnScene(topCard2, _topCard2, texArray);
-  let topCard3Obj = new Osc.OnScene(topCard3, _topCard3, texArray);
-  let topCard4Obj = new Osc.OnScene(topCard4, _topCard4, texArray);
-  //////////////////////////!!!
-  topCard0Obj.replaceMaterial(0);
+  //////////////////////////! main cards
+  const [
+    mainCardTexture_0,
+    mainCardTexture_1,
+    mainCardTexture_2,
+    mainCardTexture_3,
+    mainCardTexture_4,
+    mainCardTexture_5,
+    mainCardTexture_6,
+    mainCardTexture_7,
+    mainCardTexture_8,
+    mainCardTexture_9,
+  ] = await Promise.all([
+    Textures.findFirst("mainCardTexture_0"),
+    Textures.findFirst("mainCardTexture_1"),
+    Textures.findFirst("mainCardTexture_2"),
+    Textures.findFirst("mainCardTexture_3"),
+    Textures.findFirst("mainCardTexture_4"),
+    Textures.findFirst("mainCardTexture_5"),
+    Textures.findFirst("mainCardTexture_6"),
+    Textures.findFirst("mainCardTexture_7"),
+    Textures.findFirst("mainCardTexture_8"),
+    Textures.findFirst("mainCardTexture_9"),
+  ]);
+
+  let texArrayMainCard = [
+    mainCardTexture_0,
+    mainCardTexture_1,
+    mainCardTexture_2,
+    mainCardTexture_3,
+    mainCardTexture_4,
+    mainCardTexture_5,
+    mainCardTexture_6,
+    mainCardTexture_7,
+    mainCardTexture_8,
+    mainCardTexture_9,
+  ]; // 10 textures
+
+  // mainCard0
+
+  const [mainCard0, _mainCard0] = await Promise.all([
+    Scene.root.findFirst("mainCard0"),
+    Materials.findFirst("_mainCard0"),
+  ]); // 1 obj and mat
 
   //////////////////////////!!!
+  let TopCards = {
+    card_0: new Osc.OnScene(topCard0, _topCard0, texArray),
+    card_1: new Osc.OnScene(topCard1, _topCard1, texArray),
+    card_2: new Osc.OnScene(topCard2, _topCard2, texArray),
+    card_3: new Osc.OnScene(topCard3, _topCard3, texArray),
+    card_4: new Osc.OnScene(topCard4, _topCard4, texArray),
+  };
+  let MainCards = {
+    card: new Osc.OnScene(mainCard0, _mainCard0, texArrayMainCard),
+  };
+
+  MainCards.card.replaceMaterial(0);
+  TopCards.card_0.replaceMaterial(0);
+
   log.show();
   testBUtton.connect();
   testBUtton.resize();
