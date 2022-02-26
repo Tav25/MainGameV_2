@@ -5,9 +5,10 @@ const Textures = require("Textures");
 const TouchGestures = require("TouchGestures");
 const Time = require("Time");
 const Patches = require("Patches");
+const Animation = require("Animation");
 
 import * as Osc from "./OnScene"; //класс объектов на сцена
-// import * as Ma from './MyArray'; // работа с массивом
+import * as Ma from "./MyArray"; // работа с массивом
 // import * as MText from './MyText'; // работа с текстом
 // import * as MP from './MyPoint';
 // import * as MyGameService from './MyGameService';
@@ -79,6 +80,10 @@ import * as Osc from "./OnScene"; //класс объектов на сцена
   //!
 
   //////////////////////////////////! top cards
+  const [cardTexture_shirt] = await Promise.all([
+    Textures.findFirst("cardTexture_shirt"),
+  ]);
+
   const [
     topCardTexture_0,
     topCardTexture_1,
@@ -114,6 +119,7 @@ import * as Osc from "./OnScene"; //класс объектов на сцена
     topCardTexture_7,
     topCardTexture_8,
     topCardTexture_9,
+    cardTexture_shirt,
   ]; // 10 textures
 
   const [
@@ -178,6 +184,7 @@ import * as Osc from "./OnScene"; //класс объектов на сцена
     mainCardTexture_7,
     mainCardTexture_8,
     mainCardTexture_9,
+    cardTexture_shirt,
   ]; // 10 textures
 
   // mainCard0
@@ -189,18 +196,69 @@ import * as Osc from "./OnScene"; //класс объектов на сцена
 
   //////////////////////////!!!
   let TopCards = {
+
     card_0: new Osc.OnScene(topCard0, _topCard0, texArray),
     card_1: new Osc.OnScene(topCard1, _topCard1, texArray),
     card_2: new Osc.OnScene(topCard2, _topCard2, texArray),
     card_3: new Osc.OnScene(topCard3, _topCard3, texArray),
     card_4: new Osc.OnScene(topCard4, _topCard4, texArray),
+
+    set position1(x) {
+      let indexX = x;
+      Diagnostics.log(indexX);
+      let indexZ = -0.005;
+      this.card_2.positionXYZ([indexX * 2, 0, indexZ * 2]);
+      this.card_1.positionXYZ([indexX * 1, 0, indexZ * 1]);
+      this.card_0.positionXYZ([0, 0, 0]);
+      this.card_3.positionXYZ([indexX * -1, 0, indexZ * 1]);
+      this.card_4.positionXYZ([indexX * -2, 0, indexZ * 2]);
+    },
   };
+
+
+  let IndexCard = {
+    
+  }
+
   let MainCards = {
     card: new Osc.OnScene(mainCard0, _mainCard0, texArrayMainCard),
   };
 
+  let Game = {
+    point: 0,
+    health: 4,
+    mainArray: new Ma.MyArray(10),
+
+    showTopCard_X(){
+
+    },
+
+    upPoint() {
+      this.point += 1;
+    },
+
+    resetPoint() {
+      this.point = 0;
+    },
+
+    heathDown() {
+      this.health -= 1;
+    },
+    healthReset() {
+      this.health = 4;
+    },
+  };
+
+  //////!
   MainCards.card.replaceMaterial(0);
+  MainCards.card.showShirt();
+
   TopCards.card_0.replaceMaterial(0);
+  TopCards.card_1.showShirt();
+  TopCards.card_2.showShirt();
+  TopCards.card_3.showShirt();
+  TopCards.card_4.showShirt();
+  TopCards.position1 = 0.025;
 
   log.show();
   testBUtton.connect();
@@ -208,4 +266,8 @@ import * as Osc from "./OnScene"; //класс объектов на сцена
 
   Diagnostics.log(timeNow);
   Diagnostics.log("fin");
+  Diagnostics.log(Game.mainArray.arr);
+  ////////////////////////////////////////////////////////////////
+  Game.mainArray.shuffle();
+  Diagnostics.log(Game.mainArray.arr);
 })();

@@ -27,6 +27,7 @@ class OnScene {
     this.texture = texture
     this.pX = this.obj.transform.x.pinLastValue()
     this.pY = this.obj.transform.y.pinLastValue()
+    this.lengthArrayTexture = this.texture.length
 
   }
 
@@ -58,6 +59,10 @@ class OnScene {
 
   replaceMaterial(number) {
     this.materialObj.diffuse = this.texture[number]
+  }
+  
+  showShirt() {
+    this.materialObj.diffuse = this.texture[this.lengthArrayTexture-1]
   }
 
   vrashenieZ(startPOsition, finishPosition, time, loop = 1, mir = false) {
