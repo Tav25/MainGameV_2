@@ -64,8 +64,10 @@ import * as Ma from "./MyArray"; // работа с массивом
       testButton2.transform.scaleX = testButton2.transform.scaleY = this.size;
     },
 
-    actionButton0() {
-      Diagnostics.log("testButton0");
+    async actionButton0() {
+      Diagnostics.log("testButton");
+      cardTest.oborot(2200, testCommand);
+      Diagnostics.log(cardTest.isFace);
     },
     actionButton1() {
       Diagnostics.log("testButton1");
@@ -196,7 +198,6 @@ import * as Ma from "./MyArray"; // работа с массивом
 
   //////////////////////////!!!
   let TopCards = {
-
     card_0: new Osc.OnScene(topCard0, _topCard0, texArray),
     card_1: new Osc.OnScene(topCard1, _topCard1, texArray),
     card_2: new Osc.OnScene(topCard2, _topCard2, texArray),
@@ -215,10 +216,7 @@ import * as Ma from "./MyArray"; // работа с массивом
     },
   };
 
-
-  let IndexCard = {
-    
-  }
+  let IndexCard = {};
 
   let MainCards = {
     card: new Osc.OnScene(mainCard0, _mainCard0, texArrayMainCard),
@@ -229,9 +227,7 @@ import * as Ma from "./MyArray"; // работа с массивом
     health: 4,
     mainArray: new Ma.MyArray(10),
 
-    showTopCard_X(){
-
-    },
+    showTopCard_X() {},
 
     upPoint() {
       this.point += 1;
@@ -270,4 +266,98 @@ import * as Ma from "./MyArray"; // работа с массивом
   ////////////////////////////////////////////////////////////////
   Game.mainArray.shuffle();
   Diagnostics.log(Game.mainArray.arr);
+
+  class cardX {
+    constructor(obj, materialObj, texture = []) {
+      this.obj = obj;
+      this.materialObj = materialObj;
+      this.texture = texture;
+      this.pX = this.obj.transform.x.pinLastValue();
+      this.pY = this.obj.transform.y.pinLastValue();
+      this.lengthArrayTexture = this.texture.length;
+    }
+
+    get isFace() {
+      if (this.obj.transform.rotationY.pinLastValue() === 3.141592653589793) {
+        return false;
+      }
+      return true;
+    }
+
+    hide() {
+      this.obj.hidden = true;
+      this.isHidden = true;
+    }
+
+    show() {
+      this.obj.hidden = false;
+      this.isHidden = false;
+    }
+
+    positionX(xn) {
+      this.obj.transform.x = xn;
+    }
+
+    positionY(yn) {
+      this.obj.transform.y = yn;
+    }
+
+    positionXYZ([xn, yn, zn]) {
+      this.obj.transform.x = xn;
+      this.obj.transform.y = yn;
+      this.obj.transform.z = zn;
+    }
+
+    set face(number) {
+      this.materialObj.diffuse = this.texture[number];
+    }
+
+    oborot(time = 1000, fun) {
+      let startPOsition;
+      let finishPosition;
+      if (this.obj.transform.rotationY.pinLastValue() === 3.141592653589793) {
+        startPOsition = 1;
+        finishPosition = 0;
+      } else {
+        startPOsition = 0;
+        finishPosition = 1;
+      }
+      const timeDriverParameters = {
+        durationMilliseconds: time,
+        loopCount: 1, //Infinity,
+        mirror: false,
+      };
+      const timeDriver = Animation.timeDriver(timeDriverParameters);
+      const quadraticSampler = Animation.samplers.easeOutCubic(
+        Math.PI * startPOsition,
+        Math.PI * finishPosition
+      );
+      const translationAnimationScale = Animation.animate(
+        timeDriver,
+        quadraticSampler
+      );
+      this.obj.transform.rotationY = translationAnimationScale;
+      timeDriver.start();
+      timeDriver.onCompleted();
+      let tapSubscription = timeDriver.onCompleted().subscribe((event) => {
+        Diagnostics.log(">>>>");
+        tapSubscription.unsubscribe();
+        fun();
+      });
+    }
+  }
+
+  let i = 0;
+  function testCommand() {
+    cardTest.face = i;
+    cardTest.oborot(1200, testCommand);
+    cardTest.isFace ? (i = i + 1) : i;
+    Diagnostics.log(i + " TestCommand!!! " + cardTest.isFace);
+  }
+
+  const [_indexFace0] = await Promise.all([Materials.findFirst("_indexFace0")]); // 1 obj and mat
+  let cardTest = new cardX(mainCard0, _indexFace0, texArrayMainCard);
+  // cardTest.positionX(0.06);
+  cardTest.face = 0;
+  // cardTest.oborot(2);
 })();
