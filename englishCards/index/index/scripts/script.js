@@ -242,20 +242,33 @@ import * as CX from "./CardX";
 
   //////!
   function firstPosition() {
-    let x = cardTest.opacity([0, 1], 1000, zero);
-    cardTest.oborot(1000, zero);
-    //
+    // const intervalTimer = Time.setInterval(() => {
+    //   cardTest.opacityTest([0, 1], 1000, zero);
+    // }, 500);
+    const period = [
+      { delay: 1, run: true },
+      { delay: 1, run: true },
+      { delay: 1, run: true },
+    ];
 
-    var p1 = new Promise(function (resolve, reject) {
-      resolve("Успех!");
-
+    const bn = timeFrom.monitor().subscribe(function (event) {
+      if (periodFun(0)) {
+        // bn.unsubscribe();
+        // period[0].run = false; //
+        cardTest.opacityTest([0, 1], 1000, zero);
+      }
     });
 
-    p1.then(
-      function (value) {
-        Diagnostics.log(value); // Успех!
+    function periodFun(position) {
+      if (
+        timeFrom.pinLastValue() > timeNow + period[position].delay &&
+        period[position].run
+      ) {
+        period[position].run = false; //
+        period.length - 1 === position ? bn.unsubscribe() : "";
+        return true;
       }
-    );
+    }
   }
 
   MainCards.card.textureReplace(0);

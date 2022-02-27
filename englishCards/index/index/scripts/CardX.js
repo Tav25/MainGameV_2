@@ -114,7 +114,29 @@ class CardX {
       Diagnostics.log(">>>>");
       tapSubscription.unsubscribe();
       fun();
-      
+      return "fdg";
     });
+  }
+
+  async opacityTest([start = 0, finish = 1], time = 500, fun) {
+      const timeDriverParameters = {
+        durationMilliseconds: time,
+        loopCount: 1, //Infinity,
+      };
+      const timeDriver = Animation.timeDriver(timeDriverParameters);
+      const quadraticSampler = Animation.samplers.easeInSine(start, finish);
+      const translationAnimationScale = Animation.animate(
+        timeDriver,
+        quadraticSampler
+      );
+      this.materialFace.opacity = translationAnimationScale;
+      this.materialBack.opacity = translationAnimationScale;
+      timeDriver.start();
+    let tapSubscription = await timeDriver.onCompleted().subscribe((event) => {
+      Diagnostics.log(">>>>");
+      tapSubscription.unsubscribe();
+      fun();
+    });
+    return timeDriver
   }
 }
