@@ -57,7 +57,7 @@ class OnScene {
   }
 
 
-  replaceMaterial(number) {
+  textureReplace(number) {
     this.materialObj.diffuse = this.texture[number]
   }
   
