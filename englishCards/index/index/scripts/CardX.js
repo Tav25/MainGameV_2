@@ -49,7 +49,7 @@ class CardX {
     this.materialFace.diffuse = this.texture[number];
   }
 
-  oborot(time = 1000, fun) {
+  oborot(time = 1000) {
     let startPOsition;
     let finishPosition;
     if (this.obj.transform.rotationY.pinLastValue() === 3.141592653589793) {
@@ -91,7 +91,7 @@ class CardX {
     let tapSubscription = timeDriver.onCompleted().subscribe((event) => {
       Diagnostics.log(">>>>");
       tapSubscription.unsubscribe();
-      fun();
+      // fun();
       return event;
     });
   }
@@ -118,7 +118,7 @@ class CardX {
     });
   }
 
-  async opacityTest([start = 0, finish = 1], time = 500, fun) {
+  async opacityTest([start = 0, finish = 1], time = 500) {
       const timeDriverParameters = {
         durationMilliseconds: time,
         loopCount: 1, //Infinity,
@@ -135,7 +135,7 @@ class CardX {
     let tapSubscription = await timeDriver.onCompleted().subscribe((event) => {
       Diagnostics.log(">>>>");
       tapSubscription.unsubscribe();
-      fun();
+      // fun();
     });
     return timeDriver
   }

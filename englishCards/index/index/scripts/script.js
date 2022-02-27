@@ -242,33 +242,42 @@ import * as CX from "./CardX";
 
   //////!
   function firstPosition() {
-    // const intervalTimer = Time.setInterval(() => {
-    //   cardTest.opacityTest([0, 1], 1000, zero);
-    // }, 500);
-    const period = [
-      { delay: 1, run: true },
-      { delay: 1, run: true },
-      { delay: 1, run: true },
-    ];
+    let animaInTime = {
+      bn:'',
+      timeNow: timeFrom.pinLastValue(),
+      period: [
+        { delay: 1, run: true },
+        { delay: 5, run: true },
+        // { delay: 1, run: true },
+      ],
 
-    const bn = timeFrom.monitor().subscribe(function (event) {
-      if (periodFun(0)) {
-        // bn.unsubscribe();
-        // period[0].run = false; //
-        cardTest.opacityTest([0, 1], 1000, zero);
-      }
-    });
+      isPeriod: (position) => {
+        if (
+          timeFrom.pinLastValue() >
+            animaInTime.timeNow + animaInTime.period[position].delay &&
+          animaInTime.period[position].run
+        ) {
+          animaInTime.period[position].run = false; //
+          if (animaInTime.period.length - 1 === position) {
+            Diagnostics.log(position);
+            animaInTime.bn.unsubscribe();
+          }
+          return true;
+        }
+      },
 
-    function periodFun(position) {
-      if (
-        timeFrom.pinLastValue() > timeNow + period[position].delay &&
-        period[position].run
-      ) {
-        period[position].run = false; //
-        period.length - 1 === position ? bn.unsubscribe() : "";
-        return true;
-      }
-    }
+      main: () => {
+        animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+          if (animaInTime.isPeriod(0)) {
+            cardTest.opacityTest([0, 1], 1000, zero);
+          }
+          if (animaInTime.isPeriod(1)) {
+            cardTest.oborot();
+          }
+        });
+      },
+    };
+    animaInTime.main();
   }
 
   MainCards.card.textureReplace(0);
