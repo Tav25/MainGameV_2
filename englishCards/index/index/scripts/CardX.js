@@ -96,7 +96,7 @@ class CardX {
     // });
   }
 
-  opacity([start = 0, finish = 1], time = 500, fun) {
+  opacityAnim([start = 0, finish = 1], time = 500, fun) {
     const timeDriverParameters = {
       durationMilliseconds: time,
       loopCount: 1, //Infinity,

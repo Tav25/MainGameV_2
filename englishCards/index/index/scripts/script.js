@@ -9,7 +9,7 @@ const Animation = require("Animation");
 
 import * as Osc from "./OnScene"; //класс объектов на сцена
 import * as Ma from "./MyArray"; // работа с массивом
-// import * as MText from './MyText'; // работа с текстом
+import * as MText from "./MyText"; // работа с текстом
 // import * as MP from './MyPoint';
 // import * as MyGameService from './MyGameService';
 import * as CX from "./CardX";
@@ -17,12 +17,20 @@ import * as CX from "./CardX";
 (async function () {
   //!LOG
   const [logText] = await Promise.all([Scene.root.findFirst("logText")]);
-  let log = {
-    data: `test`,
-    show() {
-      logText.text = this.data.toString();
+  let Log = {
+    data: `777`,
+    text2DCl: new MText.MyText(logText), // инициализация класса
+    show(info = this.data) {
+      this.text2DCl.test(`${info}`);
     },
   };
+
+  // /// вывод тестовой информации
+  // const [text2D] = await Promise.all([Scene.root.findFirst("2dText0")]); //2д текст на сцене
+  // let text2DCl = new MText.MyText(text2D); // инициализация класса
+  // function vuvodInformacii(info = "no info") {
+  //   text2DCl.test(`${info}`);
+  // }
 
   //! TESTBuTTON
   const [testButtonCanvas] = await Promise.all([
@@ -62,13 +70,16 @@ import * as CX from "./CardX";
     async actionButton0() {
       Diagnostics.log("testButton");
       // Diagnostics.log(cardTest.isFace);
+      firstPosition();
     },
     actionButton1() {
       Diagnostics.log("testButton1");
+      Game.test2();
     },
     actionButton2() {
       Diagnostics.log("testButton2");
-      firstPosition();
+      Game.button.tap();
+      Game.test();
     },
   };
   //! time
@@ -169,7 +180,7 @@ import * as CX from "./CardX";
     Textures.findFirst("mainCardTexture_8"),
     Textures.findFirst("mainCardTexture_9"),
   ]);
-  
+
   let texArrayMainCard = [
     mainCardTexture_0,
     mainCardTexture_1,
@@ -183,7 +194,7 @@ import * as CX from "./CardX";
     mainCardTexture_9,
     cardTexture_shirt,
   ]; // 10 textures
-  
+
   const [mainCard0] = await Promise.all([Scene.root.findFirst("mainCard0")]); // 1 obj and mat
   const [_indexFace0] = await Promise.all([Materials.findFirst("_indexFace0")]); // 1 obj and mat
   const [_indexBack0] = await Promise.all([Materials.findFirst("_indexBack0")]); // 1 obj and mat
@@ -197,21 +208,15 @@ import * as CX from "./CardX";
     _indexBack0,
     texArrayMainCard
   );
-  let cardTest1 = new CX.CardX(
-    mainCard1,
-    _indexFace1,
-    _indexBack1,
-    texArrayMainCard
-    );
+  let cardTest1 = new CX.CardX(mainCard1, _indexFace1, _indexBack1, texArray);
 
-  
   //////////////////////////!!!
   let TopCards = {
     card_1: new Osc.OnScene(topCard1, _topCard1, texArray),
     card_2: new Osc.OnScene(topCard2, _topCard2, texArray),
     card_3: new Osc.OnScene(topCard3, _topCard3, texArray),
     card_4: new Osc.OnScene(topCard4, _topCard4, texArray),
-    
+
     set position1(x) {
       let indexX = x;
       Diagnostics.log(indexX);
@@ -222,16 +227,51 @@ import * as CX from "./CardX";
       this.card_4.positionXYZ([indexX * -2, 0, indexZ * 2]);
     },
   };
-  
-  
-  
+
   let Game = {
     point: 0,
     health: 4,
     mainArray: new Ma.MyArray(10),
-    
-    showTopCardMain() {},
-    
+    secondArray: new Ma.MyArray(10),
+
+    button: {
+      value: ["start", "stop", "reset"],
+      currentValue: "start",
+
+      tap() {
+        this.currentValue =
+          this.value[this.value.indexOf(this.currentValue) + 1];
+        this.currentValue === undefined
+          ? (this.currentValue = this.value[0])
+          : "";
+      },
+    },
+
+    test() {
+      this.prepareArr();
+      cardTest.face = Game.mainArray.arr[0];
+      cardTest1.face = Game.mainArray.arr[0];
+    },
+
+    test2() {
+      this.prepareSecondArr();
+    },
+
+    prepareArr() {
+      this.mainArray.mArray();
+      this.mainArray.shuffle();
+      // return this.mainArray.arr;
+    },
+
+    prepareSecondArr() {
+      this.secondArray.mArray();
+      this.secondArray.shuffle();
+      this.secondArray.shuffleInclude(this.mainArray.arr[0]);
+      // return this.mainArray.arr;
+    },
+
+    preparation() {},
+
     upPoint() {
       this.point += 1;
     },
@@ -247,7 +287,7 @@ import * as CX from "./CardX";
       this.health = 4;
     },
   };
-  
+
   //////!
   function firstPosition() {
     let animaInTime = {
@@ -272,7 +312,7 @@ import * as CX from "./CardX";
           }
         });
       },
-      
+
       isPeriod: (position) => {
         if (
           timeFrom.pinLastValue() >
@@ -290,22 +330,27 @@ import * as CX from "./CardX";
     };
     animaInTime.main();
   }
-  
 
+  const ng4 = Time.setInterval(() => {
+    let data = `Game current button: ${Game.button.currentValue}
+    mainArray ${Game.mainArray.arr}
+    __sec.arr ${Game.secondArray.arr}
+    `;
+    Log.show(data);
+  }, 250);
+
+  ////////////////////////////!
   testButton.connect();
   TopCards.card_1.showShirt();
   TopCards.card_2.showShirt();
   TopCards.card_3.showShirt();
   TopCards.card_4.showShirt();
   TopCards.position1 = 0.025;
-  
-  
+
   Diagnostics.log(timeNow);
-  
 
-  
-
-
-    cardTest.face = 0;
+  cardTest.face = 0;
+  cardTest1.face = 0;
+  cardTest.oborot(5);
+  cardTest1.oborot(5);
 })();
-
