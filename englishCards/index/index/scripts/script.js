@@ -68,18 +68,16 @@ import * as CX from "./CardX";
     },
 
     async actionButton0() {
-      Diagnostics.log("testButton");
-      // Diagnostics.log(cardTest.isFace);
-      firstPosition();
+      // Diagnostics.log("testButtonA0");
+      Game.test0();
     },
     actionButton1() {
-      Diagnostics.log("testButton1");
-      Game.test2();
+      // Diagnostics.log("testButtonB1");
+      Game.test1();
     },
     actionButton2() {
-      Diagnostics.log("testButton2");
-      Game.button.tap();
-      Game.test();
+      // Diagnostics.log("testButtonC2");
+      Game.test2();
     },
   };
   //! time
@@ -115,7 +113,7 @@ import * as CX from "./CardX";
     Textures.findFirst("topCardTexture_8"),
     Textures.findFirst("topCardTexture_9"),
   ]);
-
+  
   let texArray = [
     topCardTexture_0,
     topCardTexture_1,
@@ -180,7 +178,7 @@ import * as CX from "./CardX";
     Textures.findFirst("mainCardTexture_8"),
     Textures.findFirst("mainCardTexture_9"),
   ]);
-
+  
   let texArrayMainCard = [
     mainCardTexture_0,
     mainCardTexture_1,
@@ -194,7 +192,7 @@ import * as CX from "./CardX";
     mainCardTexture_9,
     cardTexture_shirt,
   ]; // 10 textures
-
+  
   const [mainCard0] = await Promise.all([Scene.root.findFirst("mainCard0")]); // 1 obj and mat
   const [_indexFace0] = await Promise.all([Materials.findFirst("_indexFace0")]); // 1 obj and mat
   const [_indexBack0] = await Promise.all([Materials.findFirst("_indexBack0")]); // 1 obj and mat
@@ -207,16 +205,16 @@ import * as CX from "./CardX";
     _indexFace0,
     _indexBack0,
     texArrayMainCard
-  );
-  let cardTest1 = new CX.CardX(mainCard1, _indexFace1, _indexBack1, texArray);
-
+    );
+    let cardTest1 = new CX.CardX(mainCard1, _indexFace1, _indexBack1, texArray);
+    
   //////////////////////////!!!
   let TopCards = {
     card_1: new Osc.OnScene(topCard1, _topCard1, texArray),
     card_2: new Osc.OnScene(topCard2, _topCard2, texArray),
     card_3: new Osc.OnScene(topCard3, _topCard3, texArray),
     card_4: new Osc.OnScene(topCard4, _topCard4, texArray),
-
+    
     set position1(x) {
       let indexX = x;
       Diagnostics.log(indexX);
@@ -233,30 +231,50 @@ import * as CX from "./CardX";
     health: 4,
     mainArray: new Ma.MyArray(10),
     secondArray: new Ma.MyArray(10),
-
+    
     button: {
       value: ["start", "stop", "reset"],
-      currentValue: "start",
+      currentValue: "reset",
 
       tap() {
         this.currentValue =
-          this.value[this.value.indexOf(this.currentValue) + 1];
+        this.value[this.value.indexOf(this.currentValue) + 1];
         this.currentValue === undefined
           ? (this.currentValue = this.value[0])
           : "";
       },
     },
+    
+    mainAction: {
+      get start() {
+        Diagnostics.log("><><S><><");
+      },
 
-    test() {
+      get stop() {
+        Diagnostics.log("><><T><><");
+      },
+
+      get reset() {
+        Diagnostics.log("><><R><><");
+      },
+    },
+
+    test0() {
       this.prepareArr();
       cardTest.face = Game.mainArray.arr[0];
       cardTest1.face = Game.mainArray.arr[0];
     },
 
-    test2() {
+    test1() {
       this.prepareSecondArr();
+      // Diagnostics.log(this.button.currentValue);
     },
-
+    
+    test2(){
+      Game.button.tap();
+      Game.mainAction[this.button.currentValue];
+    },
+    
     prepareArr() {
       this.mainArray.mArray();
       this.mainArray.shuffle();
