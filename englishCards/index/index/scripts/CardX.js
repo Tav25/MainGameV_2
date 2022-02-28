@@ -118,7 +118,7 @@ class CardX {
     });
   }
 
-  async opacityTest([start = 0, finish = 1], time = 500) {
+  async opacity([start = 0, finish = 1], time = 500) {
       const timeDriverParameters = {
         durationMilliseconds: time,
         loopCount: 1, //Infinity,
