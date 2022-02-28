@@ -243,13 +243,25 @@ import * as CX from "./CardX";
   //////!
   function firstPosition() {
     let animaInTime = {
-      bn:'',
+      bn: "",
       timeNow: timeFrom.pinLastValue(),
       period: [
-        { delay: 1, run: true },
-        { delay: 5, run: true },
+        { delay: 0.5, run: true },
+        { delay: 3, run: true },
         // { delay: 1, run: true },
       ],
+
+      main: () => {
+        animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+          //////////////////////////////////////!
+          if (animaInTime.isPeriod(0)) {
+            cardTest.opacityTest([0, 1], 1000, zero);
+          }
+          if (animaInTime.isPeriod(1)) {
+            cardTest.oborot();
+          }
+        });
+      },
 
       isPeriod: (position) => {
         if (
@@ -264,17 +276,6 @@ import * as CX from "./CardX";
           }
           return true;
         }
-      },
-
-      main: () => {
-        animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
-          if (animaInTime.isPeriod(0)) {
-            cardTest.opacityTest([0, 1], 1000, zero);
-          }
-          if (animaInTime.isPeriod(1)) {
-            cardTest.oborot();
-          }
-        });
       },
     };
     animaInTime.main();

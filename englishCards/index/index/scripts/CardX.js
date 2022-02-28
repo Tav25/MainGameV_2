@@ -75,25 +75,25 @@ class CardX {
     );
     this.obj.transform.rotationY = translationAnimationScale;
     //
-    const timeDriverParametersSize = {
-      durationMilliseconds: time / 2,
-      loopCount: 2, //Infinity,
-      mirror: true,
-    };
-    const timeDriverSize = Animation.timeDriver(timeDriverParametersSize);
-    const sizeSampler = Animation.samplers.easeOutCubic(1, 1.1);
-    const sizeScale = Animation.animate(timeDriverSize, sizeSampler);
-    this.obj.transform.scaleY = sizeScale;
-    this.obj.transform.scaleX = sizeScale;
-    //
+    // const timeDriverParametersSize = {
+    //   durationMilliseconds: time / 2,
+    //   loopCount: 2, //Infinity,
+    //   mirror: true,
+    // };
+    // const timeDriverSize = Animation.timeDriver(timeDriverParametersSize);
+    // const sizeSampler = Animation.samplers.easeOutCubic(1, 1.1);
+    // const sizeScale = Animation.animate(timeDriverSize, sizeSampler);
+    // this.obj.transform.scaleY = sizeScale;
+    // this.obj.transform.scaleX = sizeScale;
+    // //
     timeDriver.start();
-    timeDriverSize.start();
-    let tapSubscription = timeDriver.onCompleted().subscribe((event) => {
-      Diagnostics.log(">>>>");
-      tapSubscription.unsubscribe();
-      // fun();
-      return event;
-    });
+    // timeDriverSize.start();
+    // let tapSubscription = timeDriver.onCompleted().subscribe((event) => {
+    //   Diagnostics.log(">>>>");
+    //   tapSubscription.unsubscribe();
+    //   // fun();
+    //   return event;
+    // });
   }
 
   opacity([start = 0, finish = 1], time = 500, fun) {
