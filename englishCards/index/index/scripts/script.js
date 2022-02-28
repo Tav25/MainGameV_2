@@ -24,7 +24,7 @@ import * as CX from "./CardX";
     },
   };
 
-  //! TESTBUTTON
+  //! TESTBuTTON
   const [testButtonCanvas] = await Promise.all([
     Scene.root.findFirst("testButtonCanvas0"),
   ]);
@@ -44,7 +44,7 @@ import * as CX from "./CardX";
     Materials.findFirst("_testButton2"),
   ]); // 3 obj and mat
 
-  let testBUtton = {
+  let testButton = {
     size: 800,
 
     connect() {
@@ -169,7 +169,7 @@ import * as CX from "./CardX";
     Textures.findFirst("mainCardTexture_8"),
     Textures.findFirst("mainCardTexture_9"),
   ]);
-
+  
   let texArrayMainCard = [
     mainCardTexture_0,
     mainCardTexture_1,
@@ -183,35 +183,47 @@ import * as CX from "./CardX";
     mainCardTexture_9,
     cardTexture_shirt,
   ]; // 10 textures
-
-  // mainCard0
+  
+  const [mainCard0] = await Promise.all([Scene.root.findFirst("mainCard0")]); // 1 obj and mat
+  const [_indexFace0] = await Promise.all([Materials.findFirst("_indexFace0")]); // 1 obj and mat
+  const [_indexBack0] = await Promise.all([Materials.findFirst("_indexBack0")]); // 1 obj and mat
+  const [mainCard1] = await Promise.all([Scene.root.findFirst("mainCard1")]); // 1 obj and mat
+  const [_indexFace1] = await Promise.all([Materials.findFirst("_indexFace1")]); // 1 obj and mat
+  const [_indexBack1] = await Promise.all([Materials.findFirst("_indexBack1")]); // 1 obj and mat
+  // Diagnostics.log(_indexBack0);
+  let cardTest = new CX.CardX(
+    mainCard0,
+    _indexFace0,
+    _indexBack0,
+    texArrayMainCard
+  );
+  let cardTest1 = new CX.CardX(
+    mainCard1,
+    _indexFace1,
+    _indexBack1,
+    texArrayMainCard
+    );
 
   
   //////////////////////////!!!
   let TopCards = {
-    // card_0: new Osc.OnScene(topCard0, _topCard0, texArray),
     card_1: new Osc.OnScene(topCard1, _topCard1, texArray),
     card_2: new Osc.OnScene(topCard2, _topCard2, texArray),
     card_3: new Osc.OnScene(topCard3, _topCard3, texArray),
     card_4: new Osc.OnScene(topCard4, _topCard4, texArray),
-
+    
     set position1(x) {
       let indexX = x;
       Diagnostics.log(indexX);
       let indexZ = -0.005;
       this.card_2.positionXYZ([indexX * 2, 0, indexZ * 2]);
       this.card_1.positionXYZ([indexX * 1, 0, indexZ * 1]);
-      // this.card_0.positionXYZ([0, 0, 0]);
       this.card_3.positionXYZ([indexX * -1, 0, indexZ * 1]);
       this.card_4.positionXYZ([indexX * -2, 0, indexZ * 2]);
     },
   };
   
-  let IndexCard = {};
-
-  // let MainCards = {
-  //   card: new Osc.OnScene(mainCard0, _mainCard0, texArrayMainCard),
-  // };
+  
   
   let Game = {
     point: 0,
@@ -251,11 +263,12 @@ import * as CX from "./CardX";
         animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
           //////////////////////////////////////!
           if (animaInTime.isPeriod(0)) {
-            cardTest.opacityTest([0, 1], 1000, zero);
-            cardTest1.opacityTest([0, 1], 1000, zero);
+            cardTest.opacityTest([0, 1], 1000);
+            cardTest1.opacityTest([0, 1], 1000);
           }
           if (animaInTime.isPeriod(1)) {
             cardTest.oborot();
+            cardTest1.oborot();
           }
         });
       },
@@ -278,56 +291,21 @@ import * as CX from "./CardX";
     animaInTime.main();
   }
   
-  // MainCards.card.textureReplace(0);
-  // MainCards.card.showShirt();
 
-  //TopCards.card_0.textureReplace(0);
+  testButton.connect();
   TopCards.card_1.showShirt();
   TopCards.card_2.showShirt();
   TopCards.card_3.showShirt();
   TopCards.card_4.showShirt();
   TopCards.position1 = 0.025;
   
-  // log.show();
-  testBUtton.connect();
   
   Diagnostics.log(timeNow);
-  // Diagnostics.log("fin");
-  // Diagnostics.log(Game.mainArray.arr);
-  // ////////////////////////////////////////////////////////////////
-  // Game.mainArray.shuffle();
-  // Diagnostics.log(Game.mainArray.arr);
+  
 
-  let i = 0;
-  function testCommand() {
-    cardTest.face = i;
-    cardTest.oborot(1200, testCommand);
-    cardTest.isFace ? (i = i + 1) : i;
-    Diagnostics.log(i + " TestCommand!!! " + cardTest.isFace);
-  }
+  
 
-  const [mainCard0] = await Promise.all([Scene.root.findFirst("mainCard0")]); // 1 obj and mat
-  const [_indexFace0] = await Promise.all([Materials.findFirst("_indexFace0")]); // 1 obj and mat
-  const [_indexBack0] = await Promise.all([Materials.findFirst("_indexBack0")]); // 1 obj and mat
-  const [mainCard1] = await Promise.all([Scene.root.findFirst("mainCard1")]); // 1 obj and mat
-  const [_indexFace1] = await Promise.all([Materials.findFirst("_indexFace1")]); // 1 obj and mat
-  const [_indexBack1] = await Promise.all([Materials.findFirst("_indexBack1")]); // 1 obj and mat
-  // Diagnostics.log(_indexBack0);
-  let cardTest = new CX.CardX(
-    mainCard0,
-    _indexFace0,
-    _indexBack0,
-    texArrayMainCard
-  );
-  let cardTest1 = new CX.CardX(
-    mainCard1,
-    _indexFace1,
-    _indexBack1,
-    texArrayMainCard
-    );
-    // cardTest.positionX(0.06);
+
     cardTest.face = 0;
-    // cardTest.oborot(2);
 })();
 
-function zero() {}
