@@ -205,7 +205,7 @@ import * as CX from "./CardX";
     let data = `Game current button: ${Game.button.currentValue}
     __sec.arr ${Game.Logic.secondArray.arr}
     mainArray ${Game.Logic.mainArray.arr}
-    p: ${Game.Logic.PointHealth.point} h: ${Game.Logic.PointHealth.health}
+    p: ${Game.Logic.PointHealth.point.current} h: ${Game.Logic.PointHealth.health.current}
     G: ${Game.isGame}
     `;
     Log.show(data);
@@ -213,7 +213,6 @@ import * as CX from "./CardX";
   //////////////////////////!!!
 
   let Game = {
-
     isGame: false,
     isGameChanger: () => {
       Game.isGame ? (Game.isGame = false) : (Game.isGame = true);
@@ -254,7 +253,7 @@ import * as CX from "./CardX";
         Game.TopCards.card_4.showShirt();
         Game.Anim.firstAnim();
         Game.Logic.prepareArr();
-        Game.resetData();
+        Game.Logic.PointHealth.resetData();
       },
 
       get start() {
@@ -395,28 +394,81 @@ import * as CX from "./CardX";
         };
         animaInTime.main();
       },
+
+      resultAnswer() {
+        let animaInTime = {
+          bn: "",
+          timeNow: timeFrom.pinLastValue(),
+          period: [
+            { delay: 0.1, run: true },
+            { delay: 1.2, run: true },
+            { delay: 2, run: true },
+          ],
+
+          main: () => {
+            animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+              //////////////////////////////////////!
+              if (animaInTime.isPeriod(0)) {
+              }
+              if (animaInTime.isPeriod(1)) {
+              }
+              if (animaInTime.isPeriod(2)) {
+              }
+            });
+          },
+
+          isPeriod: (position) => {
+            if (
+              timeFrom.pinLastValue() >
+                animaInTime.timeNow + animaInTime.period[position].delay &&
+              animaInTime.period[position].run
+            ) {
+              animaInTime.period[position].run = false; //
+              if (animaInTime.period.length - 1 === position) {
+                Diagnostics.log(position);
+                animaInTime.bn.unsubscribe();
+              }
+              return true;
+            }
+          },
+        };
+        animaInTime.main();
+      },
     },
 
     Logic: {
       PointHealth: {
-        point: 0,
-        health: 4,
+        point: { current: 0, min: 0, max: 10 },
+        health: { current: 4, min: 0, max: 4 },
+
+        upPoint() {
+          this.point.current += 1;
+        },
+
+        resetPoint() {
+          this.point.current = 0;
+        },
+
+        heathDown() {
+          this.health.current -= 1;
+        },
+        healthReset() {
+          this.health.current = 4;
+        },
+
+        resetData() {
+          Game.point = 0;
+          Game.health = 4;
+        },
       },
+
       answer: true,
       mainArray: new Ma.MyArray(10),
       secondArray: new Ma.MyArray(10),
       get isCardEqual() {
         return this.mainArray.arr[0] === this.secondArray.arr[0];
       },
-      get resultAnswer() {
-        if (this.answer === true && this.isCardEqual === true) {
-          return true;
-        }
-        if (this.answer === false && this.isCardEqual === false) {
-          return true;
-        }
-        return false;
-      },
+      get resultAnswer() {},
 
       prepareArr() {
         Game.Logic.mainArray.mArray();
@@ -431,20 +483,29 @@ import * as CX from "./CardX";
         return Game.Logic.mainArray.arr;
       },
 
-      main(answer = true) {
-        if (this.resultAnswer) {
+      main() {
+        if (this.answer === true && this.isCardEqual === true) {
           this.mainAnswerTrue();
-        } else {
+        }
+        if (this.answer === false && this.isCardEqual === false) {
+          this.mainAnswerNext();
+        }
+        if (this.answer === true && this.isCardEqual === false) {
           this.mainAnswerFalse();
         }
       },
 
       mainAnswerTrue() {
         Diagnostics.log("<<<<<<<<<<<<<<T");
+        this.PointHealth.upPoint();
       },
 
       mainAnswerFalse() {
         Diagnostics.log(">>>>>>>>>>>>>>F");
+      },
+
+      mainAnswerNext() {
+        Diagnostics.log(">>>>>>>>>>>>>>N");
       },
 
       test0() {
@@ -467,25 +528,6 @@ import * as CX from "./CardX";
       test2() {
         Game.button.tap();
       },
-    },
-
-    resetData() {
-      Game.point = 0;
-      Game.health = 4;
-    },
-    upPoint() {
-      this.point += 1;
-    },
-
-    resetPoint() {
-      this.point = 0;
-    },
-
-    heathDown() {
-      this.health -= 1;
-    },
-    healthReset() {
-      this.health = 4;
     },
   };
 

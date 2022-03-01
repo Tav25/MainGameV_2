@@ -64,6 +64,7 @@ class MyArray {
     do {
       this.shuffle();
     } while (!this.arr.slice(0, lengthArray).includes(inc));
+    this.arr = this.arr.slice(0, lengthArray);
   }
 
   repl(vneshnijArray, pologenieVmassive) {
