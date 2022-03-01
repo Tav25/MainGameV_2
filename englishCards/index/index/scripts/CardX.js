@@ -74,26 +74,28 @@ class CardX {
       quadraticSampler
     );
     this.obj.transform.rotationY = translationAnimationScale;
-    //
-    // const timeDriverParametersSize = {
-    //   durationMilliseconds: time / 2,
-    //   loopCount: 2, //Infinity,
-    //   mirror: true,
-    // };
-    // const timeDriverSize = Animation.timeDriver(timeDriverParametersSize);
-    // const sizeSampler = Animation.samplers.easeOutCubic(1, 1.1);
-    // const sizeScale = Animation.animate(timeDriverSize, sizeSampler);
-    // this.obj.transform.scaleY = sizeScale;
-    // this.obj.transform.scaleX = sizeScale;
-    // //
     timeDriver.start();
-    // timeDriverSize.start();
-    // let tapSubscription = timeDriver.onCompleted().subscribe((event) => {
-    //   Diagnostics.log(">>>>");
-    //   tapSubscription.unsubscribe();
-    //   // fun();
-    //   return event;
-    // });
+  }
+
+  oborotZ(time = 1000) {
+    let startPOsition = 0;
+    let finishPosition = 2;
+    const timeDriverParameters = {
+      durationMilliseconds: time,
+      loopCount: 1, //Infinity,
+      mirror: false,
+    };
+    const timeDriver = Animation.timeDriver(timeDriverParameters);
+    const quadraticSampler = Animation.samplers.easeOutCubic(
+      Math.PI * startPOsition,
+      Math.PI * finishPosition
+    );
+    const translationAnimationScale = Animation.animate(
+      timeDriver,
+      quadraticSampler
+    );
+    this.obj.transform.rotationZ = translationAnimationScale;
+    timeDriver.start();
   }
 
   newPositionXYZ([oldX, oldY, oldZ], [newX, newY, newZ], time, count = 1) {

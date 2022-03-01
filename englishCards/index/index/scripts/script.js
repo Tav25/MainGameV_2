@@ -395,24 +395,35 @@ import * as CX from "./CardX";
         animaInTime.main();
       },
 
-      resultAnswer() {
+      resultAnswerCard1False() {
         let animaInTime = {
           bn: "",
           timeNow: timeFrom.pinLastValue(),
           period: [
             { delay: 0.1, run: true },
+            { delay: 1, run: true },
             { delay: 1.2, run: true },
-            { delay: 2, run: true },
           ],
 
           main: () => {
             animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
               //////////////////////////////////////!
               if (animaInTime.isPeriod(0)) {
+                Game.MainCards.card_1.newPositionXYZ(
+                  [0, 0, 0],
+                  [0, 0, 0.01],
+                  1000
+                );
               }
               if (animaInTime.isPeriod(1)) {
+                Game.MainCards.card_1.newPositionXYZ(
+                  [0, 0, 0.01],
+                  [-0.5, 0.05, 0.01],
+                  2000
+                );
               }
               if (animaInTime.isPeriod(2)) {
+                Game.MainCards.card_1.oborotZ();
               }
             });
           },
@@ -506,6 +517,7 @@ import * as CX from "./CardX";
 
       mainAnswerNext() {
         Diagnostics.log(">>>>>>>>>>>>>>N");
+        Game.Anim.resultAnswerCard1False();
       },
 
       test0() {
