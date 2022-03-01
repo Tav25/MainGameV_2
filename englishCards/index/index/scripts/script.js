@@ -179,7 +179,7 @@ import * as CX from "./CardX";
     Textures.findFirst("mainCardTexture_9"),
   ]);
 
-  let texArrayMainCard = [
+  let texArrayMC = [
     mainCardTexture_0,
     mainCardTexture_1,
     mainCardTexture_2,
@@ -200,14 +200,6 @@ import * as CX from "./CardX";
   const [_indexFace1] = await Promise.all([Materials.findFirst("_indexFace1")]); // 1 obj and mat
   const [_indexBack1] = await Promise.all([Materials.findFirst("_indexBack1")]); // 1 obj and mat
   // Diagnostics.log(_indexBack0);
-  let cardTest = new CX.CardX(
-    mainCard0,
-    _indexFace0,
-    _indexBack0,
-    texArrayMainCard
-  );
-  let cardTest1 = new CX.CardX(mainCard1, _indexFace1, _indexBack1, texArray);
-
   //////////////////////////!!!
   const ng4 = Time.setInterval(() => {
     let data = `Game current button: ${Game.button.currentValue}
@@ -229,6 +221,11 @@ import * as CX from "./CardX";
       card_2: new Osc.OnScene(topCard2, _topCard2, texArray),
       card_3: new Osc.OnScene(topCard3, _topCard3, texArray),
       card_4: new Osc.OnScene(topCard4, _topCard4, texArray),
+    },
+
+    MainCards: {
+      card_0: new CX.CardX(mainCard0, _indexFace0, _indexBack0, texArrayMC),
+      card_1: new CX.CardX(mainCard1, _indexFace1, _indexBack1, texArray),
     },
 
     button: {
@@ -267,17 +264,17 @@ import * as CX from "./CardX";
         period: [
           { delay: 0.5, run: true },
           { delay: 0.7, run: true },
-          { delay: 1.2, run: true },
+          { delay: 1.5, run: true },
         ],
 
         main: () => {
           animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
             //////////////////////////////////////!
             if (animaInTime.isPeriod(0)) {
-              cardTest.opacity([0, 1], 1000);
+              Game.MainCards.card_0.opacity([0, 1], 1000);
             }
             if (animaInTime.isPeriod(1)) {
-              cardTest1.opacity([0, 1], 1000);
+              Game.MainCards.card_1.opacity([0, 1], 1000);
             }
             if (animaInTime.isPeriod(2)) {
               let x = 0.03;
@@ -313,11 +310,63 @@ import * as CX from "./CardX";
       }
     },
 
+    startAnim() {
+      let animaInTime = {
+        bn: "",
+        timeNow: timeFrom.pinLastValue(),
+        period: [
+          { delay: 0.1, run: true },
+          { delay: 0.9, run: true },
+          { delay: 1.8, run: true },
+        ],
+
+        main: () => {
+          animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+            //////////////////////////////////////!
+            let z = 0.05;
+            let y = 0.015;
+            let z1 = 0.02;
+            let y1 = 0.005;
+            if (animaInTime.isPeriod(0)) {
+              Game.MainCards.card_0.newPositionXYZ([0, 0, 0], [0, y, z], 1000);
+              Game.MainCards.card_1.newPositionXYZ([0, 0, 0], [0, y1, z1], 1000);
+            }
+            if (animaInTime.isPeriod(1)) {
+              Game.MainCards.card_0.oborot();
+              Game.MainCards.card_1.oborot();
+            }
+            if (animaInTime.isPeriod(2)) {
+              Game.MainCards.card_0.newPositionXYZ([0, y, z], [0, 0, 0], 1000);
+              Game.MainCards.card_1.newPositionXYZ([0, y1, z1], [0, 0, 0], 1000);
+            }
+          });
+        },
+
+        isPeriod: (position) => {
+          if (
+            timeFrom.pinLastValue() >
+              animaInTime.timeNow + animaInTime.period[position].delay &&
+            animaInTime.period[position].run
+          ) {
+            animaInTime.period[position].run = false; //
+            if (animaInTime.period.length - 1 === position) {
+              Diagnostics.log(position);
+              animaInTime.bn.unsubscribe();
+            }
+            return true;
+          }
+        },
+      };
+      animaInTime.main();
+    },
+
     test0() {
-      this.firstAnim();
+      this.startAnim();
+      // this.firstAnim();
       // this.prepareArr();
-      // cardTest.face = Game.mainArray.arr[0];
-      // cardTest1.face = Game.mainArray.arr[0];
+      Game.MainCards.card_0.face = Game.mainArray.arr[0];
+      Game.MainCards.card_1.face = Game.secondArray.arr[0];
+      // card_1.face = Game.mainArray.arr[0];
     },
 
     test1() {
@@ -353,6 +402,7 @@ import * as CX from "./CardX";
       Game.TopCards.card_2.showShirt();
       Game.TopCards.card_3.showShirt();
       Game.TopCards.card_4.showShirt();
+      Game.firstAnim();
     },
 
     upPoint() {

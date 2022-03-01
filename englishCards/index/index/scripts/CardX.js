@@ -96,6 +96,34 @@ class CardX {
     // });
   }
 
+  newPositionXYZ([oldX, oldY, oldZ], [newX, newY, newZ], time, count = 1) {
+    const timeDriverParameters = {
+      durationMilliseconds: time,
+      loopCount: count, //Infinity,
+      mirror: false,
+    };
+    const timeDriver = Animation.timeDriver(timeDriverParameters);
+    const quadraticSamplerX = Animation.samplers.easeOutBounce(oldX, newX);
+    const translationAnimationScaleX = Animation.animate(
+      timeDriver,
+      quadraticSamplerX
+    );
+    const quadraticSamplerY = Animation.samplers.easeOutBounce(oldY, newY);
+    const translationAnimationScaleY = Animation.animate(
+      timeDriver,
+      quadraticSamplerY
+    );
+    const quadraticSamplerZ = Animation.samplers.easeOutBounce(oldZ, newZ);
+    const translationAnimationScaleZ = Animation.animate(
+      timeDriver,
+      quadraticSamplerZ
+    );
+    this.obj.transform.x = translationAnimationScaleX;
+    this.obj.transform.y = translationAnimationScaleY;
+    this.obj.transform.z = translationAnimationScaleZ;
+    timeDriver.start();
+  }
+
   opacityAnim([start = 0, finish = 1], time = 500, fun) {
     const timeDriverParameters = {
       durationMilliseconds: time,
@@ -119,24 +147,24 @@ class CardX {
   }
 
   async opacity([start = 0, finish = 1], time = 500) {
-      const timeDriverParameters = {
-        durationMilliseconds: time,
-        loopCount: 1, //Infinity,
-      };
-      const timeDriver = Animation.timeDriver(timeDriverParameters);
-      const quadraticSampler = Animation.samplers.easeInSine(start, finish);
-      const translationAnimationScale = Animation.animate(
-        timeDriver,
-        quadraticSampler
-      );
-      this.materialFace.opacity = translationAnimationScale;
-      this.materialBack.opacity = translationAnimationScale;
-      timeDriver.start();
+    const timeDriverParameters = {
+      durationMilliseconds: time,
+      loopCount: 1, //Infinity,
+    };
+    const timeDriver = Animation.timeDriver(timeDriverParameters);
+    const quadraticSampler = Animation.samplers.easeInSine(start, finish);
+    const translationAnimationScale = Animation.animate(
+      timeDriver,
+      quadraticSampler
+    );
+    this.materialFace.opacity = translationAnimationScale;
+    this.materialBack.opacity = translationAnimationScale;
+    timeDriver.start();
     let tapSubscription = await timeDriver.onCompleted().subscribe((event) => {
       Diagnostics.log(">>>>");
       tapSubscription.unsubscribe();
       // fun();
     });
-    return timeDriver
+    return timeDriver;
   }
 }
