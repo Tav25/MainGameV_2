@@ -205,7 +205,7 @@ import * as CX from "./CardX";
     let data = `Game current button: ${Game.button.currentValue}
     __sec.arr ${Game.Logic.secondArray.arr}
     mainArray ${Game.Logic.mainArray.arr}
-    p: ${Game.point} h: ${Game.health}
+    p: ${Game.Logic.PointHealth.point} h: ${Game.Logic.PointHealth.health}
     G: ${Game.isGame}
     `;
     Log.show(data);
@@ -213,8 +213,6 @@ import * as CX from "./CardX";
   //////////////////////////!!!
 
   let Game = {
-    point: 0,
-    health: 4,
 
     isGame: false,
     isGameChanger: () => {
@@ -400,27 +398,30 @@ import * as CX from "./CardX";
     },
 
     Logic: {
+      PointHealth: {
+        point: 0,
+        health: 4,
+      },
+      answer: true,
       mainArray: new Ma.MyArray(10),
       secondArray: new Ma.MyArray(10),
+      get isCardEqual() {
+        return this.mainArray.arr[0] === this.secondArray.arr[0];
+      },
+      get resultAnswer() {
+        if (this.answer === true && this.isCardEqual === true) {
+          return true;
+        }
+        if (this.answer === false && this.isCardEqual === false) {
+          return true;
+        }
+        return false;
+      },
+
       prepareArr() {
         Game.Logic.mainArray.mArray();
         Game.Logic.mainArray.shuffle();
         // return Game.Logic.mainArray.arr;
-      },
-      test0() {
-        if (Game.isGame) {
-          Diagnostics.log("T0");
-        }
-      },
-
-      test1() {
-        if (Game.isGame) {
-          Diagnostics.log("T1");
-        }
-      },
-
-      test2() {
-        Game.button.tap();
       },
 
       prepareSecondArr() {
@@ -428,6 +429,43 @@ import * as CX from "./CardX";
         Game.Logic.secondArray.shuffle();
         Game.Logic.secondArray.shuffleInclude(Game.Logic.mainArray.arr[0]);
         return Game.Logic.mainArray.arr;
+      },
+
+      main(answer = true) {
+        if (this.resultAnswer) {
+          this.mainAnswerTrue();
+        } else {
+          this.mainAnswerFalse();
+        }
+      },
+
+      mainAnswerTrue() {
+        Diagnostics.log("<<<<<<<<<<<<<<T");
+      },
+
+      mainAnswerFalse() {
+        Diagnostics.log(">>>>>>>>>>>>>>F");
+      },
+
+      test0() {
+        //true
+        if (Game.isGame) {
+          Diagnostics.log("T0");
+          this.answer = true;
+          this.main();
+        }
+      },
+
+      test1() {
+        if (Game.isGame) {
+          Diagnostics.log("T1");
+          this.answer = false;
+          this.main();
+        }
+      },
+
+      test2() {
+        Game.button.tap();
       },
     },
 
