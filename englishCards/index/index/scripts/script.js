@@ -69,15 +69,15 @@ import * as CX from "./CardX";
 
     async actionButton0() {
       // Diagnostics.log("testButtonA0");
-      Game.test0();
+      Game.Logic.test0();
     },
     actionButton1() {
       // Diagnostics.log("testButtonB1");
-      Game.test1();
+      Game.Logic.test1();
     },
     actionButton2() {
       // Diagnostics.log("testButtonC2");
-      Game.test2();
+      Game.Logic.test2();
     },
   };
   //! time
@@ -203,8 +203,10 @@ import * as CX from "./CardX";
   //////////////////////////!!!
   const ng4 = Time.setInterval(() => {
     let data = `Game current button: ${Game.button.currentValue}
-    mainArray ${Game.mainArray.arr}
-    __sec.arr ${Game.secondArray.arr}
+    __sec.arr ${Game.Logic.secondArray.arr}
+    mainArray ${Game.Logic.mainArray.arr}
+    p: ${Game.point} h: ${Game.health}
+    G: ${Game.isGame}
     `;
     Log.show(data);
   }, 250);
@@ -213,8 +215,11 @@ import * as CX from "./CardX";
   let Game = {
     point: 0,
     health: 4,
-    mainArray: new Ma.MyArray(10),
-    secondArray: new Ma.MyArray(10),
+
+    isGame: false,
+    isGameChanger: () => {
+      Game.isGame ? (Game.isGame = false) : (Game.isGame = true);
+    },
 
     TopCards: {
       card_1: new Osc.OnScene(topCard1, _topCard1, texArray),
@@ -230,9 +235,11 @@ import * as CX from "./CardX";
 
     button: {
       value: ["start", "stop", "reset"],
-      currentValue: "reset",
+      currentValue: "start",
 
       tap() {
+        Diagnostics.log(Game.button.currentValue);
+        Game.MainAction[Game.button.currentValue];
         this.currentValue =
           this.value[this.value.indexOf(this.currentValue) + 1];
         this.currentValue === undefined
@@ -241,11 +248,25 @@ import * as CX from "./CardX";
       },
     },
 
-    mainAction: {
+    MainAction: {
+      preparation() {
+        Game.TopCards.card_1.showShirt();
+        Game.TopCards.card_2.showShirt();
+        Game.TopCards.card_3.showShirt();
+        Game.TopCards.card_4.showShirt();
+        Game.Anim.firstAnim();
+        Game.Logic.prepareArr();
+        Game.resetData();
+      },
+
       get start() {
         Diagnostics.log("><><S><><");
-        Game.prepareArr();
-        Game.resetData();
+        Game.isGameChanger();
+        // // Game.MainAction[Game.button.currentValue];
+        Game.Anim.startAnim();
+        Game.Logic.prepareSecondArr();
+        Game.MainCards.card_0.face = Game.Logic.mainArray.arr[0];
+        Game.MainCards.card_1.face = Game.Logic.secondArray.arr[0];
       },
 
       get stop() {
@@ -257,154 +278,163 @@ import * as CX from "./CardX";
       },
     },
 
-    firstAnim() {
-      let animaInTime = {
-        bn: "",
-        timeNow: timeFrom.pinLastValue(),
-        period: [
-          { delay: 0.5, run: true },
-          { delay: 0.7, run: true },
-          { delay: 1.5, run: true },
-        ],
+    Anim: {
+      firstAnim() {
+        let animaInTime = {
+          bn: "",
+          timeNow: timeFrom.pinLastValue(),
+          period: [
+            { delay: 0.5, run: true },
+            { delay: 0.7, run: true },
+            { delay: 1.5, run: true },
+          ],
 
-        main: () => {
-          animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
-            //////////////////////////////////////!
-            if (animaInTime.isPeriod(0)) {
-              Game.MainCards.card_0.opacity([0, 1], 1000);
-            }
-            if (animaInTime.isPeriod(1)) {
-              Game.MainCards.card_1.opacity([0, 1], 1000);
-            }
-            if (animaInTime.isPeriod(2)) {
-              let x = 0.03;
-              let z = -0.005;
-              animTopCard("card_1", x, z);
-              animTopCard("card_2", x * 2, z * 2);
-              animTopCard("card_3", -x, z);
-              animTopCard("card_4", x * -2, z * 2);
-            }
-          });
-        },
+          main: () => {
+            animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+              //////////////////////////////////////!
+              if (animaInTime.isPeriod(0)) {
+                Game.MainCards.card_0.opacity([0, 1], 1000);
+              }
+              if (animaInTime.isPeriod(1)) {
+                Game.MainCards.card_1.opacity([0, 1], 1000);
+              }
+              if (animaInTime.isPeriod(2)) {
+                let x = 0.03;
+                let z = -0.005;
+                animTopCard("card_1", x, z);
+                animTopCard("card_2", x * 2, z * 2);
+                animTopCard("card_3", -x, z);
+                animTopCard("card_4", x * -2, z * 2);
+              }
+            });
+          },
 
-        isPeriod: (position) => {
-          if (
-            timeFrom.pinLastValue() >
-              animaInTime.timeNow + animaInTime.period[position].delay &&
-            animaInTime.period[position].run
-          ) {
-            animaInTime.period[position].run = false; //
-            if (animaInTime.period.length - 1 === position) {
-              Diagnostics.log(position);
-              animaInTime.bn.unsubscribe();
+          isPeriod: (position) => {
+            if (
+              timeFrom.pinLastValue() >
+                animaInTime.timeNow + animaInTime.period[position].delay &&
+              animaInTime.period[position].run
+            ) {
+              animaInTime.period[position].run = false; //
+              if (animaInTime.period.length - 1 === position) {
+                Diagnostics.log(position);
+                animaInTime.bn.unsubscribe();
+              }
+              return true;
             }
-            return true;
-          }
-        },
-      };
-      animaInTime.main();
+          },
+        };
+        animaInTime.main();
 
-      function animTopCard(card, Xpos, Zpos) {
-        Game.TopCards[card].opacity([0, 1], 500);
-        Game.TopCards[card].newPositionXYZ([0, 0, 0], [Xpos, 0, Zpos], 1000);
-      }
+        function animTopCard(card, Xpos, Zpos) {
+          Game.TopCards[card].opacity([0, 1], 500);
+          Game.TopCards[card].newPositionXYZ([0, 0, 0], [Xpos, 0, Zpos], 1000);
+        }
+      },
+
+      startAnim() {
+        let animaInTime = {
+          bn: "",
+          timeNow: timeFrom.pinLastValue(),
+          period: [
+            { delay: 0.1, run: true },
+            { delay: 1.2, run: true },
+            { delay: 2, run: true },
+          ],
+
+          main: () => {
+            animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+              //////////////////////////////////////!
+              let z = 0.05;
+              let y = 0.015;
+              let z1 = 0.02;
+              let y1 = 0.005;
+              if (animaInTime.isPeriod(0)) {
+                Game.MainCards.card_0.newPositionXYZ(
+                  [0, 0, 0],
+                  [0, y, z],
+                  1000
+                );
+                Game.MainCards.card_1.newPositionXYZ(
+                  [0, 0, 0],
+                  [0, y1, z1],
+                  1000
+                );
+              }
+              if (animaInTime.isPeriod(1)) {
+                Game.MainCards.card_0.oborot();
+                Game.MainCards.card_1.oborot();
+              }
+              if (animaInTime.isPeriod(2)) {
+                Game.MainCards.card_0.newPositionXYZ(
+                  [0, y, z],
+                  [0, 0, 0],
+                  1000
+                );
+                Game.MainCards.card_1.newPositionXYZ(
+                  [0, y1, z1],
+                  [0, 0, 0],
+                  1000
+                );
+              }
+            });
+          },
+
+          isPeriod: (position) => {
+            if (
+              timeFrom.pinLastValue() >
+                animaInTime.timeNow + animaInTime.period[position].delay &&
+              animaInTime.period[position].run
+            ) {
+              animaInTime.period[position].run = false; //
+              if (animaInTime.period.length - 1 === position) {
+                Diagnostics.log(position);
+                animaInTime.bn.unsubscribe();
+              }
+              return true;
+            }
+          },
+        };
+        animaInTime.main();
+      },
     },
 
-    startAnim() {
-      let animaInTime = {
-        bn: "",
-        timeNow: timeFrom.pinLastValue(),
-        period: [
-          { delay: 0.1, run: true },
-          { delay: 0.9, run: true },
-          { delay: 1.8, run: true },
-        ],
+    Logic: {
+      mainArray: new Ma.MyArray(10),
+      secondArray: new Ma.MyArray(10),
+      prepareArr() {
+        Game.Logic.mainArray.mArray();
+        Game.Logic.mainArray.shuffle();
+        // return Game.Logic.mainArray.arr;
+      },
+      test0() {
+        if (Game.isGame) {
+          Diagnostics.log("T0");
+        }
+      },
 
-        main: () => {
-          animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
-            //////////////////////////////////////!
-            let z = 0.05;
-            let y = 0.015;
-            let z1 = 0.02;
-            let y1 = 0.005;
-            if (animaInTime.isPeriod(0)) {
-              Game.MainCards.card_0.newPositionXYZ([0, 0, 0], [0, y, z], 1000);
-              Game.MainCards.card_1.newPositionXYZ([0, 0, 0], [0, y1, z1], 1000);
-            }
-            if (animaInTime.isPeriod(1)) {
-              Game.MainCards.card_0.oborot();
-              Game.MainCards.card_1.oborot();
-            }
-            if (animaInTime.isPeriod(2)) {
-              Game.MainCards.card_0.newPositionXYZ([0, y, z], [0, 0, 0], 1000);
-              Game.MainCards.card_1.newPositionXYZ([0, y1, z1], [0, 0, 0], 1000);
-            }
-          });
-        },
+      test1() {
+        if (Game.isGame) {
+          Diagnostics.log("T1");
+        }
+      },
 
-        isPeriod: (position) => {
-          if (
-            timeFrom.pinLastValue() >
-              animaInTime.timeNow + animaInTime.period[position].delay &&
-            animaInTime.period[position].run
-          ) {
-            animaInTime.period[position].run = false; //
-            if (animaInTime.period.length - 1 === position) {
-              Diagnostics.log(position);
-              animaInTime.bn.unsubscribe();
-            }
-            return true;
-          }
-        },
-      };
-      animaInTime.main();
-    },
+      test2() {
+        Game.button.tap();
+      },
 
-    test0() {
-      this.startAnim();
-      // this.firstAnim();
-      // this.prepareArr();
-      Game.MainCards.card_0.face = Game.mainArray.arr[0];
-      Game.MainCards.card_1.face = Game.secondArray.arr[0];
-      // card_1.face = Game.mainArray.arr[0];
-    },
-
-    test1() {
-      this.prepareSecondArr();
-      // Diagnostics.log(this.button.currentValue);
-    },
-
-    test2() {
-      Game.button.tap();
-      Game.mainAction[this.button.currentValue];
-    },
-
-    prepareArr() {
-      this.mainArray.mArray();
-      this.mainArray.shuffle();
-      // return this.mainArray.arr;
+      prepareSecondArr() {
+        Game.Logic.secondArray.mArray();
+        Game.Logic.secondArray.shuffle();
+        Game.Logic.secondArray.shuffleInclude(Game.Logic.mainArray.arr[0]);
+        return Game.Logic.mainArray.arr;
+      },
     },
 
     resetData() {
-      this.point = 0;
-      this.health = 4;
+      Game.point = 0;
+      Game.health = 4;
     },
-
-    prepareSecondArr() {
-      this.secondArray.mArray();
-      this.secondArray.shuffle();
-      this.secondArray.shuffleInclude(this.mainArray.arr[0]);
-      // return this.mainArray.arr;
-    },
-
-    preparation() {
-      Game.TopCards.card_1.showShirt();
-      Game.TopCards.card_2.showShirt();
-      Game.TopCards.card_3.showShirt();
-      Game.TopCards.card_4.showShirt();
-      Game.firstAnim();
-    },
-
     upPoint() {
       this.point += 1;
     },
@@ -423,5 +453,5 @@ import * as CX from "./CardX";
 
   ////////////////////////////!
   testButton.connect();
-  Game.preparation();
+  Game.MainAction.preparation();
 })();
