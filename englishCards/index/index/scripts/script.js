@@ -633,6 +633,7 @@ import * as CX from "./CardX";
       },
 
       answer: true,
+      nextSpin: "",
       mainArray: new Ma.MyArray(10),
       secondArray: new Ma.MyArray(10),
       get isCardEqual() {
@@ -666,6 +667,22 @@ import * as CX from "./CardX";
         if (this.answer === false && this.isCardEqual === true) {
           this.mainAnswerFalse();
         }
+        this.pauseAfterAnswer();
+      },
+
+      pauseAfterAnswer() {
+        const intervalTimer = Time.setInterval(() => {
+          Diagnostics.log("999999999999999999999");
+          this.nextSpinFun.true();
+          stopIntervalTimer(intervalTimer);
+        }, 2500);
+      },
+
+      nextSpinFun: {
+        true() {
+          Game.Logic.mainArray.delFirst();
+          Game.MainAction.start();
+        },
       },
 
       mainAnswerTrue() {
@@ -714,3 +731,7 @@ import * as CX from "./CardX";
   testButton.connect();
   Game.MainAction.preparation();
 })();
+
+function stopIntervalTimer(x) {
+  Time.clearInterval(x);
+}
