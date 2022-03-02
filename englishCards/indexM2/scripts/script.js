@@ -12,10 +12,10 @@ import * as Model from "./Model";
 import * as Presenter from "./Presenter";
 
 (async function () {
-  let A = new View.View();
-  let B = new View.View();
-  let C = new View.View();
-  Diagnostics.log(A.arr);
-  Diagnostics.log(B.arr);
-  Diagnostics.log(C.arr);
+  let Vw = new View.View();
+  let Md = new Model.Model();
+  let Pr = new Presenter.Presenter();
+
+  Vw.test(Md);
+  Vw.test2(2);
 })();
