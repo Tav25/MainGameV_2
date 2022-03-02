@@ -17,5 +17,5 @@ import * as Presenter from "./Presenter";
   let Pr = new Presenter.Presenter();
 
   Vw.test(Md);
-  Vw.test2(2);
+  Vw.test2(0);
 })();

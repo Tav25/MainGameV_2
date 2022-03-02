@@ -14,8 +14,8 @@ class View {
 
   test(x) {
     let result = `p: ${x.point.current} h: ${x.health.current}
-    SA: ${x.secondArray}
-    MA: ${x.mainArray}
+    SA: ${x.secondArray.arr}
+    MA: ${x.mainArray.arr}
     MC: ${x.mainCard.number} ${x.mainCard.face}
     TC: ${x.topCard.number} ${x.topCard.face}
     `;
@@ -33,7 +33,7 @@ async function logTextView(x) {
   logText.text = x;
 }
 
-async function mainCard() {
+async function mainCard(x) {
   const [mainCard0] = await Promise.all([Scene.root.findFirst("mainCard0")]);
   const [_indexFace0] = await Promise.all([Materials.findFirst("_indexFace0")]);
   const [_indexBack0] = await Promise.all([Materials.findFirst("_indexBack0")]);
@@ -87,11 +87,10 @@ async function mainCard() {
   );
   Diagnostics.log(card_0.lengthArrayTexture);
   // card_0.positionY(-0.2);
-  _indexFace0.diffuse = texArray[0];
-  card_0.face = 5;
+  card_0.face = x;
 }
 
-async function topCard() {
+async function topCard(x) {
   const [mainCard1] = await Promise.all([Scene.root.findFirst("mainCard1")]);
   const [_indexFace1] = await Promise.all([Materials.findFirst("_indexFace1")]);
   const [_indexBack1] = await Promise.all([Materials.findFirst("_indexBack1")]);
@@ -144,9 +143,18 @@ async function topCard() {
     texArray
   );
   Diagnostics.log(card_1.lengthArrayTexture);
-  // card_0.positionY(-0.2);
-  _indexFace1.diffuse = texArray[0];
-  card_1.face = 5;
+  card_1.face = x;
+}
+
+async function topCardsOther() {
+  const [topCard_0, topCard_1, topCard_2, topCard_3, _topCard] =
+    await Promise.all([
+      Scene.root.findFirst("topCard_0"),
+      Scene.root.findFirst("topCard_1"),
+      Scene.root.findFirst("topCard_2"),
+      Scene.root.findFirst("topCard_3"),
+      Materials.findFirst("_topCard"),
+    ]); // 4 obj and mat
 }
 
 // (async function (x) {
