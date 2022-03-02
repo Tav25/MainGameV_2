@@ -1,7 +1,9 @@
 export { View };
 
 const Scene = require("Scene");
+const Materials = require("Materials");
 export const Diagnostics = require("Diagnostics");
+const Textures = require("Textures");
 
 // let x = "15";
 
