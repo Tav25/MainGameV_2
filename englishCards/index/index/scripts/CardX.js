@@ -9,9 +9,17 @@ class CardX {
     this.materialFace = materialFace;
     this.materialBack = materialBack;
     this.texture = texture;
-    this.pX = this.obj.transform.x.pinLastValue();
-    this.pY = this.obj.transform.y.pinLastValue();
     this.lengthArrayTexture = this.texture.length;
+  }
+
+  get pX() {
+    return this.obj.transform.x.pinLastValue();
+  }
+  get pY() {
+    return this.obj.transform.y.pinLastValue();
+  }
+  get pZ() {
+    return this.obj.transform.z.pinLastValue();
   }
 
   get isFace() {
@@ -77,9 +85,9 @@ class CardX {
     timeDriver.start();
   }
 
-  oborotZ(time = 1000) {
-    let startPOsition = 0;
-    let finishPosition = 2;
+  oborotZ(startPOsition = 0, finishPosition = 0.5, time = 1000) {
+    // let startPOsition = 0;
+    // let finishPosition = 2;
     const timeDriverParameters = {
       durationMilliseconds: time,
       loopCount: 1, //Infinity,
@@ -105,17 +113,17 @@ class CardX {
       mirror: false,
     };
     const timeDriver = Animation.timeDriver(timeDriverParameters);
-    const quadraticSamplerX = Animation.samplers.easeOutBounce(oldX, newX);
+    const quadraticSamplerX = Animation.samplers.easeInOutCubic(oldX, newX);
     const translationAnimationScaleX = Animation.animate(
       timeDriver,
       quadraticSamplerX
     );
-    const quadraticSamplerY = Animation.samplers.easeOutBounce(oldY, newY);
+    const quadraticSamplerY = Animation.samplers.easeInOutCubic(oldY, newY);
     const translationAnimationScaleY = Animation.animate(
       timeDriver,
       quadraticSamplerY
     );
-    const quadraticSamplerZ = Animation.samplers.easeOutBounce(oldZ, newZ);
+    const quadraticSamplerZ = Animation.samplers.easeInOutCubic(oldZ, newZ);
     const translationAnimationScaleZ = Animation.animate(
       timeDriver,
       quadraticSamplerZ

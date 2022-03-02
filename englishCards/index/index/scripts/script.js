@@ -395,35 +395,194 @@ import * as CX from "./CardX";
         animaInTime.main();
       },
 
-      resultAnswerCard1False() {
+      flyCardToLeft() {
         let animaInTime = {
           bn: "",
           timeNow: timeFrom.pinLastValue(),
           period: [
             { delay: 0.1, run: true },
-            { delay: 1, run: true },
-            { delay: 1.2, run: true },
+            { delay: 0.25, run: true },
+            { delay: 0.45, run: true },
+          ],
+
+          main: () => {
+            let x = 0.004;
+            animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+              //////////////////////////////////////!
+              if (animaInTime.isPeriod(0)) {
+                Game.MainCards.card_0.newPositionXYZ([0, 0, 0], [x, 0, 0], 250);
+              }
+              if (animaInTime.isPeriod(1)) {
+                Game.MainCards.card_0.newPositionXYZ(
+                  [x, 0, 0],
+                  [-x, 0, 0],
+                  250
+                );
+              }
+              if (animaInTime.isPeriod(2)) {
+                Game.MainCards.card_0.newPositionXYZ(
+                  [-x, 0, 0],
+                  [0, 0, 0],
+                  100
+                );
+                Game.MainCards.card_1.newPositionXYZ(
+                  [0, 0, 0],
+                  [-0.5, 0.12, 0.01],
+                  1500
+                );
+                Game.MainCards.card_1.oborotZ(1, 1.2, 3000);
+              }
+            });
+          },
+
+          isPeriod: (position) => {
+            if (
+              timeFrom.pinLastValue() >
+                animaInTime.timeNow + animaInTime.period[position].delay &&
+              animaInTime.period[position].run
+            ) {
+              animaInTime.period[position].run = false; //
+              if (animaInTime.period.length - 1 === position) {
+                Diagnostics.log(position);
+                animaInTime.bn.unsubscribe();
+              }
+              return true;
+            }
+          },
+        };
+        animaInTime.main();
+      },
+
+      replaceTopCardCards() {
+        let animaInTime = {
+          bn: "",
+          timeNow: timeFrom.pinLastValue(),
+          timeUp: 4,
+          period: [
+            { delay: 4 + 0.1, run: true },
+            { delay: 4 + 1, run: true },
+            { delay: 4 + 1.2, run: true },
           ],
 
           main: () => {
             animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
               //////////////////////////////////////!
               if (animaInTime.isPeriod(0)) {
-                Game.MainCards.card_1.newPositionXYZ(
+                Diagnostics.log("pX:" + Game.TopCards.card_1.pX);
+                Game.TopCards.card_1.newPositionXYZ(
+                  [
+                    Game.TopCards.card_1.pX,
+                    Game.TopCards.card_1.pY,
+                    Game.TopCards.card_1.pZ,
+                  ],
                   [0, 0, 0],
-                  [0, 0, 0.01],
                   1000
+                );
+                Game.TopCards.card_2.newPositionXYZ(
+                  [
+                    Game.TopCards.card_2.pX,
+                    Game.TopCards.card_2.pY,
+                    Game.TopCards.card_2.pZ,
+                  ],
+                  [
+                    Game.TopCards.card_1.pX,
+                    Game.TopCards.card_1.pY,
+                    Game.TopCards.card_1.pZ,
+                  ],
+                  1500
                 );
               }
               if (animaInTime.isPeriod(1)) {
+                Game.MainCards.card_1.oborot(1);
                 Game.MainCards.card_1.newPositionXYZ(
-                  [0, 0, 0.01],
-                  [-0.5, 0.05, 0.01],
-                  2000
+                  [
+                    Game.MainCards.card_1.pX,
+                    Game.MainCards.card_1.pY,
+                    Game.MainCards.card_1.pZ,
+                  ],
+                  [0, 0, 0],
+                  1
                 );
+                Game.MainCards.card_1.oborotZ(1, 1, 1);
               }
               if (animaInTime.isPeriod(2)) {
-                Game.MainCards.card_1.oborotZ();
+                Game.TopCards.card_1.hide();
+              }
+            });
+          },
+
+          isPeriod: (position) => {
+            if (
+              timeFrom.pinLastValue() >
+                animaInTime.timeNow + animaInTime.period[position].delay &&
+              animaInTime.period[position].run
+            ) {
+              animaInTime.period[position].run = false; //
+              if (animaInTime.period.length - 1 === position) {
+                Diagnostics.log(position);
+                animaInTime.bn.unsubscribe();
+              }
+              return true;
+            }
+          },
+        };
+        animaInTime.main();
+      },
+
+      replaceCardsTrue() {
+        let animaInTime = {
+          bn: "",
+          timeNow: timeFrom.pinLastValue(),
+          timeUp: 4,
+          period: [
+            { delay: 4 + 0.1, run: true },
+            { delay: 4 + 1, run: true },
+            { delay: 4 + 1.2, run: true },
+          ],
+
+          main: () => {
+            animaInTime.bn = timeFrom.monitor().subscribe(function (event) {
+              //////////////////////////////////////!
+              if (animaInTime.isPeriod(0)) {
+                Diagnostics.log("pX:" + Game.TopCards.card_1.pX);
+                Game.TopCards.card_1.newPositionXYZ(
+                  [
+                    Game.TopCards.card_1.pX,
+                    Game.TopCards.card_1.pY,
+                    Game.TopCards.card_1.pZ,
+                  ],
+                  [0, 0, 0],
+                  1000
+                );
+                Game.TopCards.card_2.newPositionXYZ(
+                  [
+                    Game.TopCards.card_2.pX,
+                    Game.TopCards.card_2.pY,
+                    Game.TopCards.card_2.pZ,
+                  ],
+                  [
+                    Game.TopCards.card_1.pX,
+                    Game.TopCards.card_1.pY,
+                    Game.TopCards.card_1.pZ,
+                  ],
+                  1500
+                );
+              }
+              if (animaInTime.isPeriod(1)) {
+                Game.MainCards.card_1.oborot(1);
+                Game.MainCards.card_1.newPositionXYZ(
+                  [
+                    Game.MainCards.card_1.pX,
+                    Game.MainCards.card_1.pY,
+                    Game.MainCards.card_1.pZ,
+                  ],
+                  [0, 0, 0],
+                  1
+                );
+                Game.MainCards.card_1.oborotZ(1, 1, 1);
+              }
+              if (animaInTime.isPeriod(2)) {
+                Game.TopCards.card_1.hide();
               }
             });
           },
@@ -504,20 +663,28 @@ import * as CX from "./CardX";
         if (this.answer === true && this.isCardEqual === false) {
           this.mainAnswerFalse();
         }
+        if (this.answer === false && this.isCardEqual === true) {
+          this.mainAnswerFalse();
+        }
       },
 
       mainAnswerTrue() {
         Diagnostics.log("<<<<<<<<<<<<<<T");
         this.PointHealth.upPoint();
+        // Game.Anim.replaceCardsTrue();
       },
 
       mainAnswerFalse() {
         Diagnostics.log(">>>>>>>>>>>>>>F");
+        this.PointHealth.heathDown();
+        // Game.Anim.flyCardToLeft();
+        // Game.Anim.replaceTopCardCards();
       },
 
       mainAnswerNext() {
         Diagnostics.log(">>>>>>>>>>>>>>N");
-        Game.Anim.resultAnswerCard1False();
+        // Game.Anim.flyCardToLeft();
+        // Game.Anim.replaceTopCardCards();
       },
 
       test0() {
