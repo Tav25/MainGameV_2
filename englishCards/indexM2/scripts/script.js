@@ -8,14 +8,17 @@ const Patches = require("Patches");
 const Animation = require("Animation");
 
 import * as View from "./View";
-import * as Model from "./Model";
-import * as Presenter from "./Presenter";
+import * as MD from "./Model";
+import * as Controller from "./Controller";
 
 (async function () {
   let Vw = new View.View();
-  let Md = new Model.Model();
-  let Pr = new Presenter.Presenter();
+  // let Md = new Model.Model();
+  let Pr = new Controller.Controller();
 
-  Vw.test(Md);
-  Vw.test2(0);
+  MD.Model.point.current = 10;
+  Diagnostics.log(Pr.arr);
+  Pr.connect();
+  Vw.showLog();
+  Vw.test2(5);
 })();

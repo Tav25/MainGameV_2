@@ -6,19 +6,16 @@ export const Diagnostics = require("Diagnostics");
 const Textures = require("Textures");
 
 import * as CX from "./CardX";
+import * as MD from "./Model";
 
 class View {
   constructor() {
     this.arr = 10;
   }
 
-  test(x) {
-    let result = `p: ${x.point.current} h: ${x.health.current}
-    SA: ${x.secondArray.arr}
-    MA: ${x.mainArray.arr}
-    MC: ${x.mainCard.number} ${x.mainCard.face}
-    TC: ${x.topCard.number} ${x.topCard.face}
-    `;
+  showLog(x = 'no data') {
+    let result = `p: ${MD.Model.point.current} h: ${MD.Model.health.current}`;
+    // let result = x;
     logTextView(result);
   }
 
