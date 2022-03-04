@@ -19,6 +19,7 @@ class Controller {
     ]); // 3 obj and mat
     TouchGestures.onTap(testButton0).subscribe((gesture) => {
       Diagnostics.log("A");
+      MD.Model.controllerAction.actionA();
     });
     TouchGestures.onTap(testButton1).subscribe((gesture) => {
       Diagnostics.log("B");

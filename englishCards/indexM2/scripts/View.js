@@ -13,8 +13,10 @@ class View {
     this.arr = 10;
   }
 
-  showLog(x = 'no data') {
-    let result = `p: ${MD.Model.point.current} h: ${MD.Model.health.current}`;
+  showLog(x = "no data") {
+    let result = `p: ${MD.Model.point.current} h: ${MD.Model.health.current}
+    MA: ${MD.Model.mainArray.arr}
+    `;
     // let result = x;
     logTextView(result);
   }
